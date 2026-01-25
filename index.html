@@ -1,56 +1,81 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Cardápio – Garçom</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cardápio do Garçom</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-  <header>
-    <h1>Cardápio</h1>
-  </header>
+<header>
+  <h1>Cardápio</h1>
+</header>
 
-  <main class="cardapio">
+<main class="cardapio">
 
-    <h2>🍔 Hambúrgueres</h2>
+  <h2>🍔 Hambúrgueres</h2>
 
-    <div class="item">
-      <div class="info">
-        <h3>X-Burger</h3>
-        <p>Pão, hambúrguer, queijo</p>
-      </div>
-      <div class="acoes">
-        <button onclick="removerItem('xburger')">−</button>
-        <span id="qtd-xburger">0</span>
-        <span class="preco">R$ 25,00</span>
-        <button onclick="addItem('xburger')">+</button>
-      </div>
+  <div class="item">
+    <div class="info">
+      <h3>X-Burger</h3>
+      <p>Pão, carne, queijo</p>
     </div>
-
-    <div class="item">
-      <div class="info">
-        <h3>X-Salada</h3>
-        <p>Pão, hambúrguer, queijo, alface, tomate</p>
-      </div>
-      <div class="acoes">
-        <button onclick="removerItem('xsalada')">−</button>
-        <span id="qtd-xsalada">0</span>
-        <span class="preco">R$ 28,00</span>
-        <button onclick="addItem('xsalada')">+</button>
-      </div>
+    <div class="acoes">
+      <button onclick="alterarQtd('xburger', -1)">−</button>
+      <span id="qtd-xburger">0</span>
+      <button onclick="alterarQtd('xburger', 1)">+</button>
     </div>
+    <span class="preco">R$ 15,00</span>
+  </div>
 
-    <h2>🥤 Bebidas</h2>
+  <div class="item">
+    <div class="info">
+      <h3>X-Salada</h3>
+      <p>Pão, carne, queijo, alface e tomate</p>
+    </div>
+    <div class="acoes">
+      <button onclick="alterarQtd('xsalada', -1)">−</button>
+      <span id="qtd-xsalada">0</span>
+      <button onclick="alterarQtd('xsalada', 1)">+</button>
+    </div>
+    <span class="preco">R$ 18,00</span>
+  </div>
 
-    <div class="item">
-      <div class="info">
-        <h3>Refrigerante</h3>
-        <p>Lata 350ml</p>
-      </div>
-      <div class="acoes">
-        <button onclick="removerItem('refrigerante')">−</button>
-        <span id="qtd-r
+  <h2>🥤 Bebidas</h2>
+
+  <div class="item">
+    <div class="info">
+      <h3>Água</h3>
+    </div>
+    <div class="acoes">
+      <button onclick="alterarQtd('agua', -1)">−</button>
+      <span id="qtd-agua">0</span>
+      <button onclick="alterarQtd('agua', 1)">+</button>
+    </div>
+    <span class="preco">R$ 10,00</span>
+  </div>
+
+  <div class="item">
+    <div class="info">
+      <h3>Água com gás</h3>
+    </div>
+    <div class="acoes">
+      <button onclick="alterarQtd('aguagas', -1)">−</button>
+      <span id="qtd-aguagas">0</span>
+      <button onclick="alterarQtd('aguagas', 1)">+</button>
+    </div>
+    <span class="preco">R$ 12,00</span>
+  </div>
+
+</main>
+
+<footer>
+  <div id="total">Total: R$ 0,00</div>
+  <button id="enviar" onclick="enviarPedido()">Enviar Pedido</button>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
 
