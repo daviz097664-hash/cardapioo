@@ -85,9 +85,21 @@
 
   <footer>
     <div id="total">Total: R$ 0,00</div>
-    <button id="enviar">Enviar Pedido</button>
+    <button id="enviar" onclick="enviarPedido()">Enviar Pedido</button>
   </footer>
+
+  <!-- Tela de sucesso -->
+  <div id="tela-sucesso" class="sucesso hidden">
+    <div class="sucesso-box">
+      <h1>✅ Pedido enviado!</h1>
+      <p>Seu pedido foi enviado com sucesso.<br>
+      Aguarde, o garçom já recebeu 😉</p>
+
+      <button onclick="novoPedido()">Fazer novo pedido</button>
+    </div>
+  </div>
 
   <script type="module" src="./main.js"></script>
 </body>
 </html>
+
