@@ -146,3 +146,21 @@ footer {
   transform: scale(0.98);
 }
 
+/* ANIMAÇÃO DO ITEM */
+.item {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.item.animar {
+  transform: scale(1.04);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+}
+
+/* ANIMAÇÃO NO BOTÃO */
+.acoes button {
+  transition: transform 0.1s ease;
+}
+
+.acoes button:active {
+  transform: scale(0.85);
+}
