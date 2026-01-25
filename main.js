@@ -54,4 +54,3 @@ function novoPedido() {
   document.getElementById("tela-sucesso")
     .classList.add("hidden");
 }
-
