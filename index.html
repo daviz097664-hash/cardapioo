@@ -2,24 +2,87 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Cardápio do Garçom</title>
+  <title>Cardápio – Garçom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <h1>📋 Cardápio</h1>
+  <header>
+    <h1>Cardápio</h1>
+  </header>
 
-  <h2>🍔 Hambúrgueres</h2>
-  <label><input type="checkbox" value="X-Burger"> X-Burger</label><br>
-  <label><input type="checkbox" value="X-Salada"> X-Salada</label><br>
+  <main class="cardapio">
 
-  <h2>🥤 Bebidas</h2>
-  <label><input type="checkbox" value="Água"> Água</label><br>
-  <label><input type="checkbox" value="Refrigerante"> Refrigerante</label><br>
+    <h2>🍔 Hambúrgueres</h2>
 
-  <br>
-  <button id="enviar">Enviar pedido</button>
+    <div class="item">
+      <div class="info">
+        <h3>X-Burger</h3>
+        <p>Pão, hambúrguer, queijo</p>
+      </div>
+      <div class="acoes">
+        <span class="preco">R$ 25,00</span>
+        <button onclick="addItem('X-Burger', 25)">+</button>
+      </div>
+    </div>
 
-  <script src="main.js"></script>
+    <div class="item">
+      <div class="info">
+        <h3>X-Salada</h3>
+        <p>Pão, hambúrguer, queijo, alface, tomate</p>
+      </div>
+      <div class="acoes">
+        <span class="preco">R$ 28,00</span>
+        <button onclick="addItem('X-Salada', 28)">+</button>
+      </div>
+    </div>
+
+    <h2>🥤 Bebidas</h2>
+
+    <div class="item">
+      <div class="info">
+        <h3>Refrigerante</h3>
+        <p>Lata 350ml</p>
+      </div>
+      <div class="acoes">
+        <span class="preco">R$ 8,00</span>
+        <button onclick="addItem('Refrigerante', 8)">+</button>
+      </div>
+    </div>
+
+    <h2>💧 Águas</h2>
+
+    <div class="item">
+      <div class="info">
+        <h3>Água</h3>
+        <p>Sem gás</p>
+      </div>
+      <div class="acoes">
+        <span class="preco">R$ 10,00</span>
+        <button onclick="addItem('Água', 10)">+</button>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="info">
+        <h3>Água com gás</h3>
+        <p>Garrafa</p>
+      </div>
+      <div class="acoes">
+        <span class="preco">R$ 12,00</span>
+        <button onclick="addItem('Água com gás', 12)">+</button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div id="total">Total: R$ 0,00</div>
+    <button id="enviar">Enviar Pedido</button>
+  </footer>
+
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
