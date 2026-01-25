@@ -12,20 +12,16 @@ function alterarQtd(id, valor) {
   document.getElementById(`qtd-${id}`).innerText = itens[id].qtd;
   atualizarTotal();
 
-  // animação do card
-  const elemento = document
+  const card = document
     .getElementById(`qtd-${id}`)
     .closest(".item");
 
-  elemento.classList.add("animar");
-  setTimeout(() => {
-    elemento.classList.remove("animar");
-  }, 150);
+  card.classList.add("animar");
+  setTimeout(() => card.classList.remove("animar"), 150);
 }
 
 function atualizarTotal() {
   let total = 0;
-
   for (let item in itens) {
     total += itens[item].qtd * itens[item].preco;
   }
@@ -35,26 +31,27 @@ function atualizarTotal() {
 }
 
 function enviarPedido() {
-  let pedido = [];
+  let temItem = false;
 
   for (let item in itens) {
-    if (itens[item].qtd > 0) {
-      pedido.push(`${itens[item].qtd}x ${itens[item].nome}`);
-    }
+    if (itens[item].qtd > 0) temItem = true;
   }
 
-  if (pedido.length === 0) {
-    alert("Nenhum item selecionado");
-    return;
-  }
+  if (!temItem) return;
 
-  alert("Pedido enviado:\n\n" + pedido.join("\n"));
+  document.getElementById("tela-sucesso")
+    .classList.remove("hidden");
+}
 
-  // resetar tudo
+function novoPedido() {
   for (let item in itens) {
     itens[item].qtd = 0;
     document.getElementById(`qtd-${item}`).innerText = 0;
   }
 
   atualizarTotal();
+
+  document.getElementById("tela-sucesso")
+    .classList.add("hidden");
 }
+
