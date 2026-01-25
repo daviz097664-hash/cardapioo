@@ -1,80 +1,93 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cardápio do Garçom</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Cardápio – Garçom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>
-  <h1>Cardápio</h1>
-</header>
+  <header>
+    <h1>Cardápio</h1>
+  </header>
 
-<main class="cardapio">
+  <main class="cardapio">
 
-  <h2>🍔 Hambúrgueres</h2>
+    <h2>🍔 Hambúrgueres</h2>
 
-  <div class="item">
-    <div class="info">
-      <h3>X-Burger</h3>
-      <p>Pão, carne, queijo</p>
+    <div class="item">
+      <div class="info">
+        <h3>X-Burger</h3>
+        <p>Pão, hambúrguer, queijo</p>
+      </div>
+      <div class="acoes">
+        <button onclick="removerItem('X-Burger')">−</button>
+        <span class="preco">R$ 25,00</span>
+        <button onclick="addItem('X-Burger', 25)">+</button>
+      </div>
     </div>
-    <div class="acoes">
-      <button onclick="alterarQtd('xburger', -1)">−</button>
-      <span id="qtd-xburger">0</span>
-      <button onclick="alterarQtd('xburger', 1)">+</button>
-    </div>
-    <span class="preco">R$ 15,00</span>
-  </div>
 
-  <div class="item">
-    <div class="info">
-      <h3>X-Salada</h3>
-      <p>Pão, carne, queijo, alface e tomate</p>
+    <div class="item">
+      <div class="info">
+        <h3>X-Salada</h3>
+        <p>Pão, hambúrguer, queijo, alface, tomate</p>
+      </div>
+      <div class="acoes">
+        <button onclick="removerItem('X-Salada')">−</button>
+        <span class="preco">R$ 28,00</span>
+        <button onclick="addItem('X-Salada', 28)">+</button>
+      </div>
     </div>
-    <div class="acoes">
-      <button onclick="alterarQtd('xsalada', -1)">−</button>
-      <span id="qtd-xsalada">0</span>
-      <button onclick="alterarQtd('xsalada', 1)">+</button>
+
+    <h2>🥤 Bebidas</h2>
+
+    <div class="item">
+      <div class="info">
+        <h3>Refrigerante</h3>
+        <p>Lata 350ml</p>
+      </div>
+      <div class="acoes">
+        <button onclick="removerItem('Refrigerante')">−</button>
+        <span class="preco">R$ 8,00</span>
+        <button onclick="addItem('Refrigerante', 8)">+</button>
+      </div>
     </div>
-    <span class="preco">R$ 18,00</span>
-  </div>
 
-  <h2>🥤 Bebidas</h2>
+    <h2>💧 Águas</h2>
 
-  <div class="item">
-    <div class="info">
-      <h3>Água</h3>
+    <div class="item">
+      <div class="info">
+        <h3>Água</h3>
+        <p>Sem gás</p>
+      </div>
+      <div class="acoes">
+        <button onclick="removerItem('Água')">−</button>
+        <span class="preco">R$ 10,00</span>
+        <button onclick="addItem('Água', 10)">+</button>
+      </div>
     </div>
-    <div class="acoes">
-      <button onclick="alterarQtd('agua', -1)">−</button>
-      <span id="qtd-agua">0</span>
-      <button onclick="alterarQtd('agua', 1)">+</button>
+
+    <div class="item">
+      <div class="info">
+        <h3>Água com gás</h3>
+        <p>Garrafa</p>
+      </div>
+      <div class="acoes">
+        <button onclick="removerItem('Água com gás')">−</button>
+        <span class="preco">R$ 12,00</span>
+        <button onclick="addItem('Água com gás', 12)">+</button>
+      </div>
     </div>
-    <span class="preco">R$ 10,00</span>
-  </div>
 
-  <div class="item">
-    <div class="info">
-      <h3>Água com gás</h3>
-    </div>
-    <div class="acoes">
-      <button onclick="alterarQtd('aguagas', -1)">−</button>
-      <span id="qtd-aguagas">0</span>
-      <button onclick="alterarQtd('aguagas', 1)">+</button>
-    </div>
-    <span class="preco">R$ 12,00</span>
-  </div>
+  </main>
 
-</main>
+  <footer>
+    <div id="total">Total: R$ 0,00</div>
+    <button id="enviar">Enviar Pedido</button>
+  </footer>
 
-<footer>
-  <div id="total">Total: R$ 0,00</div>
-  <button id="enviar" onclick="enviarPedido()">Enviar Pedido</button>
-</footer>
-
-<script src="main.js"></script>
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
