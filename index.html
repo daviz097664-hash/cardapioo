@@ -23,6 +23,7 @@
         <p>Pão, hambúrguer, queijo</p>
       </div>
       <div class="acoes">
+        <button onclick="removerItem('X-Burger')">−</button>
         <span class="preco">R$ 25,00</span>
         <button onclick="addItem('X-Burger', 25)">+</button>
       </div>
@@ -34,6 +35,7 @@
         <p>Pão, hambúrguer, queijo, alface, tomate</p>
       </div>
       <div class="acoes">
+        <button onclick="removerItem('X-Salada')">−</button>
         <span class="preco">R$ 28,00</span>
         <button onclick="addItem('X-Salada', 28)">+</button>
       </div>
@@ -47,6 +49,7 @@
         <p>Lata 350ml</p>
       </div>
       <div class="acoes">
+        <button onclick="removerItem('Refrigerante')">−</button>
         <span class="preco">R$ 8,00</span>
         <button onclick="addItem('Refrigerante', 8)">+</button>
       </div>
@@ -60,29 +63,11 @@
         <p>Sem gás</p>
       </div>
       <div class="acoes">
+        <button onclick="removerItem('Água')">−</button>
         <span class="preco">R$ 10,00</span>
         <button onclick="addItem('Água', 10)">+</button>
       </div>
     </div>
 
-    <div class="item">
-      <div class="info">
-        <h3>Água com gás</h3>
-        <p>Garrafa</p>
-      </div>
-      <div class="acoes">
-        <span class="preco">R$ 12,00</span>
-        <button onclick="addItem('Água com gás', 12)">+</button>
-      </div>
-    </div>
+    <div class
 
-  </main>
-
-  <footer>
-    <div id="total">Total: R$ 0,00</div>
-    <button id="enviar">Enviar Pedido</button>
-  </footer>
-
-  <script type="module" src="./main.js"></script>
-</body>
-</html>
