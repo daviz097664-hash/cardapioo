@@ -23,9 +23,10 @@
         <p>Pão, hambúrguer, queijo</p>
       </div>
       <div class="acoes">
-        <button onclick="removerItem('X-Burger')">−</button>
+        <button onclick="removerItem('xburger')">−</button>
+        <span id="qtd-xburger">0</span>
         <span class="preco">R$ 25,00</span>
-        <button onclick="addItem('X-Burger', 25)">+</button>
+        <button onclick="addItem('xburger')">+</button>
       </div>
     </div>
 
@@ -35,9 +36,10 @@
         <p>Pão, hambúrguer, queijo, alface, tomate</p>
       </div>
       <div class="acoes">
-        <button onclick="removerItem('X-Salada')">−</button>
+        <button onclick="removerItem('xsalada')">−</button>
+        <span id="qtd-xsalada">0</span>
         <span class="preco">R$ 28,00</span>
-        <button onclick="addItem('X-Salada', 28)">+</button>
+        <button onclick="addItem('xsalada')">+</button>
       </div>
     </div>
 
@@ -49,57 +51,6 @@
         <p>Lata 350ml</p>
       </div>
       <div class="acoes">
-        <button onclick="removerItem('Refrigerante')">−</button>
-        <span class="preco">R$ 8,00</span>
-        <button onclick="addItem('Refrigerante', 8)">+</button>
-      </div>
-    </div>
-
-    <h2>💧 Águas</h2>
-
-    <div class="item">
-      <div class="info">
-        <h3>Água</h3>
-        <p>Sem gás</p>
-      </div>
-      <div class="acoes">
-        <button onclick="removerItem('Água')">−</button>
-        <span class="preco">R$ 10,00</span>
-        <button onclick="addItem('Água', 10)">+</button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="info">
-        <h3>Água com gás</h3>
-        <p>Garrafa</p>
-      </div>
-      <div class="acoes">
-        <button onclick="removerItem('Água com gás')">−</button>
-        <span class="preco">R$ 12,00</span>
-        <button onclick="addItem('Água com gás', 12)">+</button>
-      </div>
-    </div>
-
-  </main>
-
-  <footer>
-    <div id="total">Total: R$ 0,00</div>
-    <button id="enviar" onclick="enviarPedido()">Enviar Pedido</button>
-  </footer>
-
-  <!-- Tela de sucesso -->
-  <div id="tela-sucesso" class="sucesso hidden">
-    <div class="sucesso-box">
-      <h1>✅ Pedido enviado!</h1>
-      <p>Seu pedido foi enviado com sucesso.<br>
-      Aguarde, o garçom já recebeu 😉</p>
-
-      <button onclick="novoPedido()">Fazer novo pedido</button>
-    </div>
-  </div>
-
-  <script type="module" src="./main.js"></script>
-</body>
-</html>
+        <button onclick="removerItem('refrigerante')">−</button>
+        <span id="qtd-r
 
