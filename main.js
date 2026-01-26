@@ -17,11 +17,10 @@ const db = getDatabase(app);
 let carrinho = {};
 let totalGeral = 0;
 
-// Funções globais ligadas ao window para o HTML conseguir ler
 window.addItem = function(nome, preco) {
     if (!carrinho[nome]) carrinho[nome] = { qtd: 0, preco: preco };
     carrinho[nome].qtd++;
-    atualizarInterface();
+    atualizarTudo();
 }
 
 window.removerItem = function(nome, preco) {
@@ -29,10 +28,10 @@ window.removerItem = function(nome, preco) {
         carrinho[nome].qtd--;
         if (carrinho[nome].qtd === 0) delete carrinho[nome];
     }
-    atualizarInterface();
+    atualizarTudo();
 }
 
-function atualizarInterface() {
+function atualizarTudo() {
     totalGeral = 0;
     document.querySelectorAll('.quantidade').forEach(span => span.innerText = "0");
     for (let item in carrinho) {
@@ -44,30 +43,21 @@ function atualizarInterface() {
 }
 
 window.finalizarPedido = function() {
-    const nomeCliente = document.getElementById('nome-cliente').value;
-    
-    if (!nomeCliente || nomeCliente.trim() === "") {
-        alert("🚨 Por favor, digite seu nome no topo do cardápio!");
-        return;
-    }
-    if (totalGeral === 0) {
-        alert("🛒 Seu carrinho está vazio!");
-        return;
-    }
+    const nome = document.getElementById('nome-cliente').value;
+    if (!nome || nome.trim() === "") { alert("⚠️ Digite o nome do cliente!"); return; }
+    if (totalGeral === 0) { alert("🛒 Adicione itens ao pedido!"); return; }
 
-    const listaItens = Object.keys(carrinho)
-        .map(n => `${carrinho[n].qtd}x ${n}`)
-        .join(", ");
+    const itensTexto = Object.keys(carrinho).map(n => `${carrinho[n].qtd}x ${n}`).join(", ");
 
     push(ref(db, 'pedidos'), {
-        cliente: nomeCliente,
-        itens: listaItens,
+        cliente: nome,
+        itens: itensTexto,
         total: totalGeral.toFixed(2).replace('.', ','),
         data: serverTimestamp()
     }).then(() => {
-        alert("✅ Pedido enviado com sucesso para a cozinha!");
+        alert("✅ Enviado para a cozinha!");
         carrinho = {};
         document.getElementById('nome-cliente').value = "";
-        atualizarInterface();
-    }).catch(error => alert("Erro ao enviar: " + error.message));
+        atualizarTudo();
+    });
 }
