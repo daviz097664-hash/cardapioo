@@ -2,28 +2,29 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Cardápio</title>
+  <title>Cardápio Garçom</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Estilo rápido para o campo de nome ficar bonito no seu layout */
+    /* Estilos para o campo de nome e correção de layout */
     .secao-identificacao {
-      background-color: #f4f4f4;
       padding: 15px;
-      text-align: center;
-      border-bottom: 2px solid #ddd;
+      background: #121212;
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid #333;
     }
     #nome-cliente {
-      width: 80%;
-      max-width: 300px;
+      width: 90%;
       padding: 12px;
-      border: 2px solid #ccc;
+      background: #1e1e1e;
+      border: 1px solid #ffc107;
       border-radius: 8px;
-      font-size: 16px;
-      outline: none;
+      color: white;
+      font-size: 1rem;
     }
-    #nome-cliente:focus {
-      border-color: #ffc107;
+    main.cardapio {
+      padding-bottom: 120px; /* Evita que o último item fique atrás do botão */
     }
   </style>
 </head>
@@ -34,7 +35,7 @@
   </header>
 
   <div class="secao-identificacao">
-    <input type="text" id="nome-cliente" placeholder="Digite seu nome aqui..." required>
+    <input type="text" id="nome-cliente" placeholder="Nome do Cliente...">
   </div>
 
   <main class="cardapio">
@@ -91,7 +92,7 @@
       <div class="preco">R$ 28,00</div>
     </div>
 
-    <h2>🥖 Lanches de Pão Francês</h2>
+    <h2>🥖 Pão Francês</h2>
 
     <div class="item">
       <div class="info"><h3>Misto Quente</h3><p>Pão francês, presunto, mussarela, ketchup e maionese</p></div>
@@ -104,36 +105,6 @@
     </div>
 
     <div class="item">
-      <div class="info"><h3>Misto C/ Ovo</h3><p>Pão francês, presunto, ovo, mussarela, ketchup e maionese</p></div>
-      <div class="acoes">
-        <button onclick="removerItem('Misto C/ Ovo', 12)">−</button>
-        <span id="qtd-Misto C/ Ovo" class="quantidade">0</span>
-        <button onclick="addItem('Misto C/ Ovo', 12)">+</button>
-      </div>
-      <div class="preco">R$ 12,00</div>
-    </div>
-
-    <div class="item">
-      <div class="info"><h3>X-Calabresa</h3><p>Pão francês, calabresa, mussarela, cebola, ketchup e maionese</p></div>
-      <div class="acoes">
-        <button onclick="removerItem('X-Calabresa', 15)">−</button>
-        <span id="qtd-X-Calabresa" class="quantidade">0</span>
-        <button onclick="addItem('X-Calabresa', 15)">+</button>
-      </div>
-      <div class="preco">R$ 15,00</div>
-    </div>
-
-    <div class="item">
-      <div class="info"><h3>Linguica</h3><p>Pão francês, linguiça, mussarela, alface, tomate e maionese</p></div>
-      <div class="acoes">
-        <button onclick="removerItem('Linguica', 15)">−</button>
-        <span id="qtd-Linguica" class="quantidade">0</span>
-        <button onclick="addItem('Linguica', 15)">+</button>
-      </div>
-      <div class="preco)R$ 15,00</div>
-    </div>
-
-    <div class="item">
       <div class="info"><h3>Contra-filé</h3><p>Pão francês, contra filé, mussarela, alface, tomate e maionese</p></div>
       <div class="acoes">
         <button onclick="removerItem('Contra-filé', 20)">−</button>
@@ -143,7 +114,7 @@
       <div class="preco">R$ 20,00</div>
     </div>
 
-    <h2>🥤 Refrigerantes e Sucos</h2>
+    <h2>🥤 Refrigerantes</h2>
     
     <div class="item">
       <div class="info"><h3>Refrigerante Lata</h3><p>Coca, Zero, Sprite, Guaraná, Fanta</p></div>
@@ -153,112 +124,6 @@
         <button onclick="addItem('Refrigerante Lata', 7)">+</button>
       </div>
       <div class="preco">R$ 7,00</div>
-    </div>
-
-    <div class="item">
-      <div class="info"><h3>Coca-Cola 600ml</h3></div>
-      <div class="acoes">
-        <button onclick="removerItem('Coca 600ml', 10)">−</button>
-        <span id="qtd-Coca 600ml" class="quantidade">0</span>
-        <button onclick="addItem('Coca 600ml', 10)">+</button>
-      </div>
-      <div class="preco">R$ 10,00</div>
-    </div>
-
-    <div class="item">
-      <div class="info"><h3>Suco 500ml</h3><p>Laranja ou Maracujá</p></div>
-      <div class="acoes">
-        <button onclick="removerItem('Suco 500ml', 10)">−</button>
-        <span id="qtd-Suco 500ml" class="quantidade">0</span>
-        <button onclick="addItem('Suco 500ml', 10)">+</button>
-      </div>
-      <div class="preco">R$ 10,00</div>
-    </div>
-
-    <h2>🍺 Cervejas</h2>
-
-    <div class="item">
-      <div class="info"><h3>Brahma / Skol</h3></div>
-      <div class="acoes">
-        <button onclick="removerItem('Brahma Skol', 6)">−</button>
-        <span id="qtd-Brahma Skol" class="quantidade">0</span>
-        <button onclick="addItem('Brahma Skol', 6)">+</button>
-      </div>
-      <div class="preco">R$ 6,00</div>
-    </div>
-
-    <div class="item">
-      <div class="info"><h3>Heineken</h3></div>
-      <div class="acoes">
-        <button onclick="removerItem('Heineken', 9)">−</button>
-        <span id="qtd-Heineken" class="quantidade">0</span>
-        <button onclick="addItem('Heineken', 9)">+</button>
-      </div>
-      <div class="preco">R$ 9,00</div>
-    </div>
-
-    <h2>💧 Águas</h2>
-
-    <div class="item">
-      <div class="info"><h3>Água</h3><p>Sem gás</p></div>
-      <div class="acoes">
-        <button onclick="removerItem('Água', 3)">−</button>
-        <span id="qtd-Água" class="quantidade">0</span>
-        <button onclick="addItem('Água', 3)">+</button>
-      </div>
-      <div class="preco">R$ 3,00</div>
-    </div>
-
-    <div class="item">
-      <div class="info"><h3>Água c/ Gás</h3></div>
-      <div class="acoes">
-        <button onclick="removerItem('Água c/ Gás', 4)">−</button>
-        <span id="qtd-Água c/ Gás" class="quantidade">0</span>
-        <button onclick="addItem('Água c/ Gás', 4)">+</button>
-      </div>
-      <div class="preco">R$ 4,00</div>
-    </div>
-
-    <h2>➕ Adicionais</h2>
-
-    <div class="item">
-      <div class="info"><h3>Hambúrguer Extra</h3></div>
-      <div class="acoes">
-        <button onclick="removerItem('Hambúrguer Extra', 5)">−</button>
-        <span id="qtd-Hambúrguer Extra" class="quantidade">0</span>
-        <button onclick="addItem('Hambúrguer Extra', 5)">+</button>
-      </div>
-      <div class="preco">R$ 5,00</div>
-    </div>
-
-    <div class="item">
-      <div class="info"><h3>Bacon Extra</h3></div>
-      <div class="acoes">
-        <button onclick="removerItem('Bacon Extra', 5)">−</button>
-        <span id="qtd-Bacon Extra" class="quantidade">0</span>
-        <button onclick="addItem('Bacon Extra', 5)">+</button>
-      </div>
-      <div class="preco">R$ 5,00</div>
-    </div>
-
-    <div class="item">
-      <div class="info"><h3>Ovo Extra</h3></div>
-      <div class="acoes">
-        <button onclick="removerItem('Ovo Extra', 3)">−</button>
-        <span id="qtd-Ovo Extra" class="quantidade">0</span>
-        <button onclick="addItem('Ovo Extra', 3)">+</button>
-      </div>
-      <div class="preco">R$ 3,00</div>
-    </div>
-
-    <div class="item">
-      <div class="info"><h3>Milho Extra</h3></div>
-      <div class="acoes">
-        <button onclick="removerItem('Milho Extra', 3)">−</button>
-        <span id="qtd-Milho Extra" class="quantidade">0</span>
-        <button onclick="addItem('Milho Extra', 3)">+</button>
-      </div>
-      <div class="preco">R$ 3,00</div>
     </div>
 
   </main>
