@@ -25,7 +25,8 @@
             background: #111; border: 1px solid #333; border-radius: 10px; 
             padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; 
         }
-        .info h3 { color: #fff; margin-bottom: 5px; font-size: 1.1rem; }
+        .info h3 { color: #fff; margin-bottom: 2px; font-size: 1.1rem; }
+        .info p { color: #aaa; font-size: 0.85rem; margin-bottom: 10px; line-height: 1.2; }
         
         .input-obs {
             background: #1a1a1a; border: 1px solid #444; color: #ffc107;
@@ -50,13 +51,13 @@
         #total { font-size: 1.3rem; font-weight: bold; color: #ffc107; }
         #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
 
-        /* ESTILOS DO RELATÓRIO */
-        #btn-vendas { background: #222; color: #666; border: 1px solid #333; padding: 12px; width: 100%; margin-top: 50px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+        /* ADMIN */
+        #btn-vendas { background: #222; color: #666; border: 1px solid #333; padding: 12px; width: 100%; margin-top: 50px; border-radius: 8px; cursor: pointer; }
         #secao-vendas { display: none; margin-top: 20px; background: #111; padding: 15px; border-radius: 10px; border: 1px solid #444; margin-bottom: 50px;}
         .venda-card { background: #1a1a1a; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 4px solid #4caf50; font-size: 0.85rem; }
         .venda-data { color: #666; font-size: 0.7rem; }
         .venda-valor { color: #4caf50; font-weight: bold; }
-        .btn-limpar { background: #b02a37; color: #fff; border: none; padding: 12px; width: 100%; margin-top: 15px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .btn-limpar { background: #b02a37; color: #fff; border: none; padding: 12px; width: 100%; margin-top: 15px; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -69,16 +70,78 @@
 
 <main class="cardapio">
     <h2>🍔 Pão de Hambúrguer</h2>
-    <div class="item"><div class="info"><h3>X-burguer</h3><input type="text" id="obs-X-burguer" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 16,00</div><div class="acoes"><button onclick="removerItem('X-burguer', 16)">-</button><span id="qtd-X-burguer" class="quantidade">0</span><button onclick="addItem('X-burguer', 16)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-Salada</h3><input type="text" id="obs-X-Salada" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 18,00</div><div class="acoes"><button onclick="removerItem('X-Salada', 18)">-</button><span id="qtd-X-Salada" class="quantidade">0</span><button onclick="addItem('X-Salada', 18)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-EGG</h3><input type="text" id="obs-X-EGG" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('X-EGG', 20)">-</button><span id="qtd-X-EGG" class="quantidade">0</span><button onclick="addItem('X-EGG', 20)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-Bacon</h3><input type="text" id="obs-X-Bacon" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 25,00</div><div class="acoes"><button onclick="removerItem('X-Bacon', 25)">-</button><span id="qtd-X-Bacon" class="quantidade">0</span><button onclick="addItem('X-Bacon', 25)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-Tudo</h3><input type="text" id="obs-X-Tudo" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 28,00</div><div class="acoes"><button onclick="removerItem('X-Tudo', 28)">-</button><span id="qtd-X-Tudo" class="quantidade">0</span><button onclick="addItem('X-Tudo', 28)">+</button></div></div></div>
+    <div class="item">
+        <div class="info">
+            <h3>X-burguer</h3>
+            <p>Hambúrguer, presunto, mussarela, ketchup e maionese</p>
+            <input type="text" id="obs-X-burguer" class="input-obs" placeholder="Obs...">
+        </div>
+        <div class="rodape-item"><div class="preco">R$ 16,00</div><div class="acoes"><button onclick="removerItem('X-burguer', 16)">-</button><span id="qtd-X-burguer" class="quantidade">0</span><button onclick="addItem('X-burguer', 16)">+</button></div></div>
+    </div>
+
+    <div class="item">
+        <div class="info">
+            <h3>X-Salada</h3>
+            <p>Hambúrguer, presunto, mussarela, salada e maionese</p>
+            <input type="text" id="obs-X-Salada" class="input-obs" placeholder="Obs...">
+        </div>
+        <div class="rodape-item"><div class="preco">R$ 18,00</div><div class="acoes"><button onclick="removerItem('X-Salada', 18)">-</button><span id="qtd-X-Salada" class="quantidade">0</span><button onclick="addItem('X-Salada', 18)">+</button></div></div>
+    </div>
+
+    <div class="item">
+        <div class="info">
+            <h3>X-EGG</h3>
+            <p>Hambúrguer, ovo, presunto, mussarela e salada</p>
+            <input type="text" id="obs-X-EGG" class="input-obs" placeholder="Obs...">
+        </div>
+        <div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('X-EGG', 20)">-</button><span id="qtd-X-EGG" class="quantidade">0</span><button onclick="addItem('X-EGG', 20)">+</button></div></div>
+    </div>
+
+    <div class="item">
+        <div class="info">
+            <h3>X-Bacon</h3>
+            <p>Hambúrguer, bacon, presunto, mussarela e salada</p>
+            <input type="text" id="obs-X-Bacon" class="input-obs" placeholder="Obs...">
+        </div>
+        <div class="rodape-item"><div class="preco">R$ 25,00</div><div class="acoes"><button onclick="removerItem('X-Bacon', 25)">-</button><span id="qtd-X-Bacon" class="quantidade">0</span><button onclick="addItem('X-Bacon', 25)">+</button></div></div>
+    </div>
+
+    <div class="item">
+        <div class="info">
+            <h3>X-Tudo</h3>
+            <p>Hambúrguer completo com ovo e bacon</p>
+            <input type="text" id="obs-X-Tudo" class="input-obs" placeholder="Obs...">
+        </div>
+        <div class="rodape-item"><div class="preco">R$ 28,00</div><div class="acoes"><button onclick="removerItem('X-Tudo', 28)">-</button><span id="qtd-X-Tudo" class="quantidade">0</span><button onclick="addItem('X-Tudo', 28)">+</button></div></div>
+    </div>
 
     <h2>🥖 Pão Francês</h2>
-    <div class="item"><div class="info"><h3>Misto Quente</h3><input type="text" id="obs-Misto-Quente" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Misto-Quente', 10)">-</button><span id="qtd-Misto-Quente" class="quantidade">0</span><button onclick="addItem('Misto-Quente', 10)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-Calabresa</h3><input type="text" id="obs-X-Calabresa" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 15,00</div><div class="acoes"><button onclick="removerItem('X-Calabresa', 15)">-</button><span id="qtd-X-Calabresa" class="quantidade">0</span><button onclick="addItem('X-Calabresa', 15)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>Contra-filé</h3><input type="text" id="obs-Contra-file" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('Contra-file', 20)">-</button><span id="qtd-Contra-file" class="quantidade">0</span><button onclick="addItem('Contra-file', 20)">+</button></div></div></div>
+    <div class="item">
+        <div class="info">
+            <h3>Misto Quente</h3>
+            <p>Presunto e mussarela no pão francês</p>
+            <input type="text" id="obs-Misto-Quente" class="input-obs" placeholder="Obs...">
+        </div>
+        <div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Misto-Quente', 10)">-</button><span id="qtd-Misto-Quente" class="quantidade">0</span><button onclick="addItem('Misto-Quente', 10)">+</button></div></div>
+    </div>
+
+    <div class="item">
+        <div class="info">
+            <h3>X-Calabresa</h3>
+            <p>Calabresa acebolada e mussarela</p>
+            <input type="text" id="obs-X-Calabresa" class="input-obs" placeholder="Obs...">
+        </div>
+        <div class="rodape-item"><div class="preco">R$ 15,00</div><div class="acoes"><button onclick="removerItem('X-Calabresa', 15)">-</button><span id="qtd-X-Calabresa" class="quantidade">0</span><button onclick="addItem('X-Calabresa', 15)">+</button></div></div>
+    </div>
+
+    <div class="item">
+        <div class="info">
+            <h3>Contra-filé</h3>
+            <p>Contra-filé e mussarela no pão francês</p>
+            <input type="text" id="obs-Contra-file" class="input-obs" placeholder="Obs...">
+        </div>
+        <div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('Contra-file', 20)">-</button><span id="qtd-Contra-file" class="quantidade">0</span><button onclick="addItem('Contra-file', 20)">+</button></div></div>
+    </div>
 
     <h2>🥤 Bebidas</h2>
     <div class="item"><div class="info"><h3>Coca-600ml</h3></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Coca-600ml', 10)">-</button><span id="qtd-Coca-600ml" class="quantidade">0</span><button onclick="addItem('Coca-600ml', 10)">+</button></div></div></div>
@@ -98,14 +161,11 @@
     <div class="item"><div class="info"><h3>Bacon Extra</h3></div><div class="rodape-item"><div class="preco">R$ 5,00</div><div class="acoes"><button onclick="removerItem('Bacon-Extra', 5)">-</button><span id="qtd-Bacon-Extra" class="quantidade">0</span><button onclick="addItem('Bacon-Extra', 5)">+</button></div></div></div>
 
     <button id="btn-vendas" onclick="toggleVendas()">📊 Administração / Relatório</button>
-    
     <div id="secao-vendas">
         <h3 style="color: #ffc107; margin-bottom: 10px;">Caixa do Dia</h3>
         <p id="resumo-total" style="font-size: 1.5rem; color: #4caf50; font-weight: bold;">R$ 0,00</p>
         <p id="resumo-qtd" style="color: #aaa; margin-bottom: 15px;">0 pedidos realizados</p>
-        
         <div id="lista-historico"></div>
-
         <button class="btn-limpar" onclick="limparHistorico()">🗑️ ZERAR TUDO</button>
     </div>
 </main>
@@ -131,7 +191,6 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-
     let carrinho = {};
     let totalGeral = 0;
 
@@ -180,26 +239,23 @@
             data: new Date().toLocaleString('pt-BR')
         };
 
-        push(ref(db, 'pedidos'), dados); // Vai pra cozinha
-        push(ref(db, 'historico_vendas'), dados).then(() => { // Fica salvo no relatório
+        push(ref(db, 'pedidos'), dados);
+        push(ref(db, 'historico_vendas'), dados).then(() => {
             alert("Pedido Enviado!");
             location.reload();
         });
     };
 
-    // --- FUNÇÕES DO RELATÓRIO ---
     window.toggleVendas = function() {
         const div = document.getElementById('secao-vendas');
         div.style.display = div.style.display === 'block' ? 'none' : 'block';
     };
 
     window.limparHistorico = function() {
-        if (confirm("ATENÇÃO: Deseja zerar todas as vendas do relatório?")) {
-            const senha = prompt("Digite a senha (padrão 1234):");
+        if (confirm("Deseja zerar o relatório?")) {
+            const senha = prompt("Senha:");
             if (senha === "1234") {
-                remove(ref(db, 'historico_vendas')).then(() => alert("Relatório zerado!"));
-            } else {
-                alert("Senha incorreta!");
+                remove(ref(db, 'historico_vendas')).then(() => alert("Zerado!"));
             }
         }
     };
@@ -213,10 +269,7 @@
             const v = vendas[id];
             totalAcumulado += parseFloat(v.total);
             qtd++;
-            html = `<div class="venda-card">
-                <span class="venda-data">${v.data}</span><br>
-                <strong>${v.cliente}</strong>: <span class="venda-valor">R$ ${v.total}</span>
-            </div>` + html;
+            html = `<div class="venda-card"><span class="venda-data">${v.data}</span><br><strong>${v.cliente}</strong>: <span class="venda-valor">R$ ${v.total}</span></div>` + html;
         }
         document.getElementById('resumo-total').innerText = `R$ ${totalAcumulado.toFixed(2)}`;
         document.getElementById('resumo-qtd').innerText = `${qtd} pedidos realizados`;
@@ -225,4 +278,3 @@
 </script>
 </body>
 </html>
-
