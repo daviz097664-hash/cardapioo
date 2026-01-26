@@ -1,41 +1,34 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif; /* Fonte mais moderna */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #111;
   color: #fff;
-  padding-bottom: 140px; 
+  padding-bottom: 150px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centraliza o conteúdo em telas maiores */
+  align-items: center;
 }
 
 header {
   background: #b30000;
-  padding: 25px;
+  padding: 20px;
   text-align: center;
-  width: 100%; /* Garante que o fundo vermelho ocupe tudo */
+  width: 100%;
   box-sizing: border-box;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 28px;
-  letter-spacing: 1px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
 .cardapio {
   padding: 15px;
   width: 100%;
-  max-width: 500px; /* Mantém o cardápio centralizado e não muito largo */
+  max-width: 500px;
   box-sizing: border-box;
 }
 
 h2 {
-  margin-top: 30px;
+  margin-top: 25px;
   color: #ffcc00;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 22px;
 }
 
 .item {
@@ -45,59 +38,38 @@ h2 {
   background: #1c1c1c;
   margin-bottom: 12px;
   padding: 15px;
-  border-radius: 12px; /* Bordas mais arredondadas como na foto */
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3); /* Sombra suave para dar profundidade */
+  border-radius: 12px;
+  border: 1px solid #333;
 }
 
 .info {
-  flex: 1; /* Faz a info ocupar o máximo de espaço, empurrando o resto */
-  margin-right: 10px;
+  flex: 1;
+  min-width: 0; /* Evita que o texto empurre os outros elementos */
 }
 
-.info h3 {
-  margin: 0;
-  font-size: 16px;
-  color: #fff;
-}
-
-.info p {
-  margin: 5px 0 0;
-  font-size: 12px;
-  color: #888;
-  line-height: 1.3;
-}
+.info h3 { margin: 0; font-size: 16px; }
+.info p { margin: 5px 0 0; font-size: 12px; color: #aaa; }
 
 .acoes {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #262626; /* Um fundo levemente mais claro para os botões */
-  padding: 5px;
-  border-radius: 8px;
-  margin-right: 10px;
+  margin: 0 10px;
 }
 
-.acoes button {
-  min-width: 30px;
-  height: 30px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.1s;
-}
-
-.acoes button:active {
-  transform: scale(0.9); /* Efeito de clique */
+.quantidade {
+  font-weight: bold;
+  font-size: 18px;
+  min-width: 20px;
+  text-align: center;
 }
 
 .preco {
   font-weight: bold;
-  font-size: 15px;
-  white-space: nowrap; /* ISSO impede o preço de quebrar linha */
-  min-width: 70px;
-  text-align: right;
   color: #fff;
+  white-space: nowrap;
+  min-width: 75px;
+  text-align: right;
 }
 
 button {
@@ -106,26 +78,26 @@ button {
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  padding: 8px 12px;
+  font-size: 18px;
+  color: #000;
 }
 
 footer {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%); /* Centraliza o footer fixo */
   width: 100%;
   max-width: 500px;
   background: #000;
   padding: 20px;
   box-sizing: border-box;
   border-top: 1px solid #333;
-  z-index: 1000;
+  text-align: center;
 }
 
 #total {
-  text-align: center;
-  margin-bottom: 12px;
-  font-size: 18px;
+  margin-bottom: 10px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -133,9 +105,8 @@ footer {
   width: 100%;
   background: #00c853;
   color: #000;
+  padding: 15px;
+  border-radius: 8px;
   font-size: 18px;
-  font-weight: bold;
-  padding: 14px;
-  border-radius: 10px;
   text-transform: uppercase;
 }
