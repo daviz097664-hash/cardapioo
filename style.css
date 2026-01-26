@@ -1,16 +1,16 @@
-body {
+ body {
   margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #111;
+  font-family: sans-serif;
+  background-color: #111;
   color: #fff;
-  padding-bottom: 160px; /* Espaço para o rodapé não cobrir as águas */
+  padding-bottom: 180px; /* IMPORTANTE: garante que role até o fim */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 header {
-  background: #b30000;
+  background-color: #b30000;
   padding: 20px;
   text-align: center;
   width: 100%;
@@ -18,39 +18,33 @@ header {
 }
 
 .cardapio {
-  padding: 15px;
   width: 100%;
   max-width: 500px;
+  padding: 15px;
   box-sizing: border-box;
 }
 
-h2 {
-  margin-top: 25px;
-  color: #ffcc00;
-}
+h2 { color: #ffcc00; margin-top: 30px; }
 
 .item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #1c1c1c;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
   padding: 15px;
   border-radius: 12px;
 }
 
-.info {
-  flex: 1;
-}
-
+.info { flex: 1; }
 .info h3 { margin: 0; font-size: 16px; }
-.info p { margin: 5px 0 0; font-size: 12px; color: #aaa; }
+.info p { margin: 5px 0 0; font-size: 12px; color: #888; }
 
 .acoes {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0 10px;
+  gap: 10px;
+  margin: 0 15px;
 }
 
 .acoes button {
@@ -58,51 +52,35 @@ h2 {
   color: #000;
   border: none;
   border-radius: 6px;
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   font-size: 20px;
   font-weight: bold;
-  cursor: pointer;
 }
 
-.quantidade {
-  font-weight: bold;
-  font-size: 18px;
-  min-width: 20px;
-  text-align: center;
-  color: #fff;
-}
+.quantidade { font-weight: bold; min-width: 20px; text-align: center; }
 
-.preco {
-  font-weight: bold;
-  white-space: nowrap;
-  min-width: 75px;
-  text-align: right;
-}
+.preco { font-weight: bold; min-width: 80px; text-align: right; }
 
-footer {
+.rodape-fixo {
   position: fixed;
   bottom: 0;
   width: 100%;
   max-width: 500px;
   background: #000;
   padding: 20px;
-  box-sizing: border-box;
   border-top: 1px solid #333;
-  z-index: 999;
+  box-sizing: border-box;
+  text-align: center;
 }
 
-#total {
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 20px;
-  font-weight: bold;
-}
+#total { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
 
 #enviar {
   width: 100%;
   background: #00c853;
   color: #000;
+  border: none;
   padding: 15px;
   border-radius: 8px;
   font-size: 18px;
