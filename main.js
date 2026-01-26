@@ -1,37 +1,25 @@
-let totalGeral = 0;
-const carrinho = {};
+let valorTotal = 0;
+const carrinhoItems = {};
 
 function addItem(nome, preco) {
-    if (!carrinho[nome]) {
-        carrinho[nome] = 0;
-    }
-    carrinho[nome]++;
-    totalGeral += preco;
-    atualizarInterface(nome);
+    if (!carrinhoItems[nome]) carrinhoItems[nome] = 0;
+    carrinhoItems[nome]++;
+    valorTotal += preco;
+    atualizarDisplay(nome);
 }
 
 function removerItem(nome, preco) {
-    if (carrinho[nome] && carrinho[nome] > 0) {
-        carrinho[nome]--;
-        totalGeral -= preco;
-        atualizarInterface(nome);
+    if (carrinhoItems[nome] && carrinhoItems[nome] > 0) {
+        carrinhoItems[nome]--;
+        valorTotal -= preco;
+        atualizarDisplay(nome);
     }
 }
 
-function atualizarInterface(nome) {
-    const spanQtd = document.getElementById(`qtd-${nome}`);
-    if (spanQtd) {
-        spanQtd.innerText = carrinho[nome];
-    }
+function atualizarDisplay(nome) {
+    const elQtd = document.getElementById(`qtd-${nome}`);
+    if (elQtd) elQtd.innerText = carrinhoItems[nome];
     
-    const totalElemento = document.getElementById('total');
-    totalElemento.innerText = `Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
+    const elTotal = document.getElementById('total');
+    elTotal.innerText = `Total: R$ ${valorTotal.toFixed(2).replace('.', ',')}`;
 }
-
-document.getElementById('enviar').onclick = function() {
-    if (totalGeral === 0) {
-        alert("Adicione itens ao pedido!");
-    } else {
-        alert("Pedido Enviado! Total: R$ " + totalGeral.toFixed(2).replace('.', ','));
-    }
-};
