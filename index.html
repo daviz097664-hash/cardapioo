@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garçom - Site A (Completo)</title>
+    <title>Garçom - Site A (Oficial)</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #000; color: #fff; font-family: sans-serif; padding: 20px; padding-bottom: 150px; }
@@ -30,6 +30,11 @@
         #total { font-size: 1.3rem; font-weight: bold; color: #ffc107; }
         #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
         .aviso-edit { background: #d32f2f; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: none; text-align: center; font-weight: bold; }
+        
+        /* Estilo do Caixa */
+        .painel-caixa { background: #1a1a1a; border: 2px solid #4caf50; padding: 20px; border-radius: 15px; margin-top: 50px; text-align: center; }
+        .venda-valor { font-size: 2.2rem; color: #4caf50; font-weight: bold; margin: 10px 0; }
+        .btn-zerar { background: #444; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -81,6 +86,12 @@
     <hr style="border: 1px dashed #ffc107; margin: 40px 0;">
     <h2>📑 PEDIDOS EM CONSUMO</h2>
     <div id="lista-consumo"></div>
+
+    <div class="painel-caixa">
+        <h3>💰 TOTAL VENDIDO NO DIA</h3>
+        <div class="venda-valor" id="faturamento-dia">R$ 0,00</div>
+        <button class="btn-zerar" onclick="window.zerarCaixa()">REINICIAR CAIXA DO DIA</button>
+    </div>
 </main>
 
 <footer class="rodape-fixo">
@@ -183,11 +194,27 @@
                 <div class="lista-itens">${p.itens}</div>
                 <div class="total-consumo">R$ ${p.total}</div>
                 <button class="btn-edit btn-acao" onclick="window.retomar('${id}', '${p.cliente}', ${JSON.stringify(p.itensDeta).replace(/"/g, '&quot;')})">ADICIONAR MAIS ITENS ➕</button>
-                <button class="btn-fechar btn-acao" onclick="window.fecharConta('${id}', ${p.total})">FECHAR CONTA 🏁</button>
+                <button class="btn-fechar btn-acao" onclick="window.receberERegistrar('${id}', ${p.total})">FECHAR CONTA 🏁</button>
             `;
             container.appendChild(card);
         });
     });
+
+    onValue(ref(db, 'historico_vendas/faturamento_total'), (snap) => {
+        document.getElementById('faturamento-dia').innerText = `R$ ${parseFloat(snap.val() || 0).toFixed(2)}`;
+    });
+
+    window.receberERegistrar = (id, valor) => {
+        if(confirm(`Confirmar pagamento de R$ ${valor}?`)) {
+            onValue(ref(db, 'historico_vendas/faturamento_total'), (snap) => {
+                const novoTotal = parseFloat(snap.val() || 0) + parseFloat(valor);
+                set(ref(db, 'historico_vendas/faturamento_total'), novoTotal);
+            }, { onlyOnce: true });
+            remove(ref(db, `pedidos/${id}`));
+        }
+    };
+
+    window.zerarCaixa = () => { if(confirm("Zerar caixa do dia?")) set(ref(db, 'historico_vendas/faturamento_total'), 0); };
 
     window.retomar = (id, cli, itensAntigos) => {
         document.getElementById('pedido-id-edicao').value = id;
@@ -201,16 +228,7 @@
         carrinhoAtual = {}; 
         atualizarUI();
         window.scrollTo(0,0);
-        document.getElementById('enviar').innerText = "ADICIONAR NOVOS ITENS";
-    };
-
-    window.fecharConta = (id, valor) => {
-        if(confirm("Encerrar mesa?")) {
-            onValue(ref(db, 'historico_vendas/faturamento_total'), (s) => {
-                set(ref(db, 'historico_vendas/faturamento_total'), parseFloat(s.val() || 0) + parseFloat(valor));
-            }, {onlyOnce: true});
-            remove(ref(db, `pedidos/${id}`));
-        }
+        document.getElementById('enviar').innerText = "ATUALIZAR CONSUMO";
     };
 </script>
 </body>
