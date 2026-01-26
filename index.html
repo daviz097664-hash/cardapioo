@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio Garçom - Completo</title>
+    <title>Garçom - Cardápio Completo</title>
     
     <link rel="icon" type="image/jpeg" href="IMG_4557.jpeg">
     <link rel="apple-touch-icon" href="IMG_4557.jpeg">
-    <meta name="apple-mobile-web-app-capable" content="yes">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -49,7 +48,7 @@
 </head>
 <body>
 
-<header><h1>Garçom - Pedidos</h1></header>
+<header><h1>Garçom - Cardápio</h1></header>
 
 <div class="secao-identificacao">
     <input type="hidden" id="pedido-id-edicao">
@@ -91,7 +90,7 @@
     <div class="item"><div class="info"><h3>Ovo Extra</h3></div><div class="rodape-item"><div class="preco">R$ 3,00</div><div class="acoes"><button onclick="removerItem('Ovo-Extra', 3)">-</button><span id="qtd-Ovo-Extra" class="quantidade">0</span><button onclick="addItem('Ovo-Extra', 3)">+</button></div></div></div>
 
     <hr style="border: 1px dashed #ffc107; margin: 40px 0;">
-    <h2>📑 Painel de Consumo Ativo</h2>
+    <h2>📑 PEDIDOS ATIVOS</h2>
     <div id="lista-consumo"></div>
 </main>
 
@@ -164,9 +163,15 @@
         };
 
         if (idEdicao) {
-            update(ref(db, `pedidos/${idEdicao}`), dados).then(() => { location.reload(); });
+            update(ref(db, `pedidos/${idEdicao}`), dados).then(() => { 
+                alert("Pedido Atualizado!");
+                location.reload(); 
+            });
         } else {
-            push(ref(db, 'pedidos'), dados).then(() => { location.reload(); });
+            push(ref(db, 'pedidos'), dados).then(() => { 
+                alert("Pedido Enviado!");
+                location.reload(); 
+            });
         }
     };
 
@@ -174,6 +179,7 @@
         const pedidos = snapshot.val();
         const container = document.getElementById('lista-consumo');
         container.innerHTML = "";
+        
         for (let id in pedidos) {
             const p = pedidos[id];
             const corStatus = p.status === "pronto" ? "#4caf50" : "#ffc107";
@@ -188,12 +194,11 @@
                     <span class="status-tag" style="background:${corStatus}; color:#000">${textoStatus}</span>
                 </div>
                 <div class="lista-itens">${p.itens}</div>
-                <div class="total-consumo">Total: R$ ${p.total}</div>
-                <button class="btn-edit btn-acao" id="btn-edit-${id}">EDITAR / ADICIONAR ✏️</button>
-                <button class="btn-fechar btn-acao" onclick="fecharConta('${id}')">FINALIZAR E ARQUIVAR ✅</button>
+                <div class="total-consumo">R$ ${p.total}</div>
+                <button class="btn-edit btn-acao" onclick="retomarPedido('${id}', '${p.cliente}', ${JSON.stringify(p.rawCarrinho).replace(/"/g, '&quot;')})">EDITAR ✏️</button>
+                <button class="btn-fechar btn-acao" onclick="fecharConta('${id}')">FECHAR CONTA (SUMIR) 🏁</button>
             `;
             container.appendChild(card);
-            document.getElementById(`btn-edit-${id}`).onclick = () => retomarPedido(id, p.cliente, p.rawCarrinho);
         }
     });
 
@@ -207,7 +212,9 @@
     };
 
     window.fecharConta = (id) => { 
-        if(confirm("Deseja arquivar este pedido?")) remove(ref(db, `pedidos/${id}`));
+        if(confirm("Deseja realmente fechar a conta? O pedido sumirá de ambas as telas.")) {
+            remove(ref(db, `pedidos/${id}`));
+        }
     };
 </script>
 </body>
