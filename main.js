@@ -1,15 +1,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-// Sua configuração do Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyA0dHn3SXaO1Vc5cnovA7rddJN0WNrpi4k",
-  authDomain: "cardapio-restaurante-df665.firebaseapp.com",
-  databaseURL: "https://cardapio-restaurante-df665-default-rtdb.firebaseio.com/",
-  projectId: "cardapio-restaurante-df665",
-  storageBucket: "cardapio-restaurante-df665.firebasestorage.app",
-  messagingSenderId: "205272470692",
-  appId: "1:205272470692:web:1cfc7c7d084887a3fe4231"
+    apiKey: "AIzaSyA0dHn3SXaO1Vc5cnovA7rddJN0WNrpi4k",
+    authDomain: "cardapio-restaurante-df665.firebaseapp.com",
+    databaseURL: "https://cardapio-restaurante-df665-default-rtdb.firebaseio.com/",
+    projectId: "cardapio-restaurante-df665",
+    storageBucket: "cardapio-restaurante-df665.firebasestorage.app",
+    messagingSenderId: "205272470692",
+    appId: "1:205272470692:web:1cfc7c7d084887a3fe4231"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -18,11 +17,10 @@ const db = getDatabase(app);
 let carrinho = {};
 let totalGeral = 0;
 
-// Funções expostas para o HTML (window.)
 window.addItem = function(nome, preco) {
     if (!carrinho[nome]) carrinho[nome] = { qtd: 0, preco: preco };
     carrinho[nome].qtd++;
-    atualizarTudo();
+    atualizarInterface();
 }
 
 window.removerItem = function(nome, preco) {
@@ -30,54 +28,38 @@ window.removerItem = function(nome, preco) {
         carrinho[nome].qtd--;
         if (carrinho[nome].qtd === 0) delete carrinho[nome];
     }
-    atualizarTudo();
+    atualizarInterface();
 }
 
-function atualizarTudo() {
+function atualizarInterface() {
     totalGeral = 0;
-    // Reseta todos os spans de quantidade para 0
-    document.querySelectorAll('.quantidade').forEach(span => span.innerText = "0");
-    
-    // Atualiza apenas os que estão no carrinho
+    // Reseta visualmente as quantidades
+    document.querySelectorAll('.quantidade').forEach(el => el.innerText = "0");
+    // Atualiza com o que está no carrinho
     for (let item in carrinho) {
-        const span = document.getElementById(`qtd-${item}`);
-        if (span) {
-            span.innerText = carrinho[item].qtd;
-            totalGeral += carrinho[item].qtd * carrinho[item].preco;
-        }
+        const el = document.getElementById(`qtd-${item}`);
+        if (el) el.innerText = carrinho[item].qtd;
+        totalGeral += carrinho[item].qtd * carrinho[item].preco;
     }
     document.getElementById('total').innerText = `Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
 }
 
 window.finalizarPedido = function() {
     const nome = document.getElementById('nome-cliente').value;
-    
-    if (!nome || nome.trim() === "") {
-        alert("⚠️ Por favor, digite o nome do cliente!");
-        return;
-    }
-    if (totalGeral === 0) {
-        alert("🛒 O carrinho está vazio!");
-        return;
-    }
+    if (!nome || nome.trim() === "") { alert("⚠️ Digite o nome do cliente!"); return; }
+    if (totalGeral === 0) { alert("🛒 Adicione itens ao pedido!"); return; }
 
-    const itensResumo = Object.keys(carrinho)
-        .map(n => `${carrinho[n].qtd}x ${n}`)
-        .join(", ");
+    const resumo = Object.keys(carrinho).map(n => `${carrinho[n].qtd}x ${n}`).join(", ");
 
-    // Envia para o Realtime Database
     push(ref(db, 'pedidos'), {
         cliente: nome,
-        itens: itensResumo,
+        itens: resumo,
         total: totalGeral.toFixed(2).replace('.', ','),
-        timestamp: serverTimestamp()
+        data: serverTimestamp()
     }).then(() => {
-        alert("✅ Pedido enviado para a cozinha!");
-        // Limpa o formulário
+        alert("✅ PEDIDO ENVIADO PARA A COZINHA!");
         carrinho = {};
         document.getElementById('nome-cliente').value = "";
-        atualizarTudo();
-    }).catch((error) => {
-        alert("❌ Erro ao enviar: " + error.message);
-    });
+        atualizarInterface();
+    }).catch(e => alert("Erro ao enviar: " + e.message));
 }
