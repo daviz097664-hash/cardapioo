@@ -13,37 +13,29 @@
         h2 { color: #ffc107; margin: 25px 0 10px 0; border-left: 4px solid #ffc107; padding-left: 10px; font-size: 1.2rem; text-transform: uppercase; }
         .item { background: #111; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
         .info h3 { color: #fff; margin-bottom: 2px; font-size: 1.1rem; }
-        .info p { color: #aaa; font-size: 0.85rem; margin-bottom: 10px; line-height: 1.2; }
         .input-obs { background: #1a1a1a; border: 1px solid #444; color: #ffc107; padding: 10px; border-radius: 5px; width: 100%; font-size: 0.9rem; margin-bottom: 12px; }
         .rodape-item { display: flex; justify-content: space-between; align-items: center; }
         .preco { color: #4caf50; font-weight: bold; font-size: 1.1rem; }
         .acoes { display: flex; align-items: center; gap: 15px; }
         .acoes button { background: #ffc107; border: none; width: 40px; height: 40px; font-size: 1.4rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
         .quantidade { font-size: 1.4rem; font-weight: bold; min-width: 25px; text-align: center; }
-        
-        /* ESTILO DO CARD DE CONSUMO COM BORDA DINÂMICA */
-        .card-consumo { background: #111; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 8px solid #ffc107; transition: 0.3s; }
-        .card-consumo.pronto { border-left-color: #4caf50 !important; border-color: #4caf50; }
-        
+        .card-consumo { background: #111; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 8px solid #ffc107; }
         .lista-itens { color: #eee; font-size: 0.95rem; line-height: 1.4; white-space: pre-wrap; margin-bottom: 15px; background: #1a1a1a; padding: 10px; border-radius: 5px; }
-        .total-consumo { color: #4caf50; font-weight: bold; font-size: 1.2rem; text-align: right; margin-bottom: 10px; }
+        .total-consumo { color: #4caf50; font-weight: bold; font-size: 1.2rem; text-align: right; }
         .btn-acao { border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%; }
-        .btn-edit { background: #2196f3; color: white; margin-bottom: 5px; }
-        .btn-fechar { background: #b02a37; color: white; margin-top: 10px; }
+        .btn-edit { background: #2196f3; color: white; }
+        .btn-fechar { background: #b02a37; color: white; }
         .rodape-fixo { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 20px; border-top: 2px solid #ffc107; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         #total { font-size: 1.3rem; font-weight: bold; color: #ffc107; }
-        #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
-        .aviso-edit { background: #d32f2f; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: none; text-align: center; font-weight: bold; }
-        
+        #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; }
         .painel-caixa { background: #1a1a1a; border: 2px solid #4caf50; padding: 20px; border-radius: 15px; margin-top: 50px; text-align: center; }
-        .venda-valor { font-size: 2.2rem; color: #4caf50; font-weight: bold; margin: 10px 0; }
-        .btn-zerar { background: #444; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; margin-top: 10px; }
+        .venda-valor { font-size: 2.2rem; color: #4caf50; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <header><h1>Garçom - Site A</h1></header>
-<div id="aviso-edicao" class="aviso-edit">MODO ADICIONAR ITENS</div>
+<div id="aviso-edicao" style="display:none; background:#d32f2f; text-align:center; padding:10px; font-weight:bold;">MODO ADICIONAR ITENS</div>
 <div class="secao-identificacao">
     <input type="hidden" id="pedido-id-edicao">
     <input type="text" id="nome-cliente" placeholder="NOME DO CLIENTE OU MESA">
@@ -51,48 +43,32 @@
 
 <main class="cardapio">
     <h2>🍔 Hambúrgueres</h2>
-    <div class="item"><div class="info"><h3>X-burguer</h3><p>Hambúrguer, presunto, mussarela, ketchup e maionese</p><input type="text" id="obs-X-burguer" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 16,00</div><div class="acoes"><button onclick="removerItem('X-burguer')">-</button><span id="qtd-X-burguer" class="quantidade">0</span><button onclick="addItem('X-burguer', 16)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-Salada</h3><p>Hambúrguer, presunto, mussarela, salada e maionese</p><input type="text" id="obs-X-Salada" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 18,00</div><div class="acoes"><button onclick="removerItem('X-Salada')">-</button><span id="qtd-X-Salada" class="quantidade">0</span><button onclick="addItem('X-Salada', 18)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>X-burguer</h3><input type="text" id="obs-X-burguer" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 16,00</div><div class="acoes"><button onclick="removerItem('X-burguer')">-</button><span id="qtd-X-burguer" class="quantidade">0</span><button onclick="addItem('X-burguer', 16)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>X-Salada</h3><input type="text" id="obs-X-Salada" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 18,00</div><div class="acoes"><button onclick="removerItem('X-Salada')">-</button><span id="qtd-X-Salada" class="quantidade">0</span><button onclick="addItem('X-Salada', 18)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>X-EGG</h3><input type="text" id="obs-X-EGG" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('X-EGG')">-</button><span id="qtd-X-EGG" class="quantidade">0</span><button onclick="addItem('X-EGG', 20)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>X-Bacon</h3><input type="text" id="obs-X-Bacon" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 25,00</div><div class="acoes"><button onclick="removerItem('X-Bacon')">-</button><span id="qtd-X-Bacon" class="quantidade">0</span><button onclick="addItem('X-Bacon', 25)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-Tudo</h3><input type="text" id="obs-X-Tudo" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 28,00</div><div class="acoes"><button onclick="removerItem('X-Tudo')">-</button><span id="qtd-X-Tudo" class="quantidade">0</span><button onclick="addItem('X-Tudo', 28)">+</button></div></div></div>
 
-    <h2>🥖 No Pão Francês</h2>
-    <div class="item"><div class="info"><h3>Misto Quente</h3><input type="text" id="obs-Misto-Quente" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Misto-Quente')">-</button><span id="qtd-Misto-Quente" class="quantidade">0</span><button onclick="addItem('Misto-Quente', 10)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>Misto c/ Ovo</h3><input type="text" id="obs-Misto-Ovo" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 12,00</div><div class="acoes"><button onclick="removerItem('Misto-Ovo')">-</button><span id="qtd-Misto-Ovo" class="quantidade">0</span><button onclick="addItem('Misto-Ovo', 12)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-Calabresa</h3><input type="text" id="obs-X-Calabresa" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 15,00</div><div class="acoes"><button onclick="removerItem('X-Calabresa')">-</button><span id="qtd-X-Calabresa" class="quantidade">0</span><button onclick="addItem('X-Calabresa', 15)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>Contra-filé</h3><input type="text" id="obs-Contra-file" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('Contra-file')">-</button><span id="qtd-Contra-file" class="quantidade">0</span><button onclick="addItem('Contra-file', 20)">+</button></div></div></div>
+    <h2>🥖 Pão Francês</h2>
+    <div class="item"><div class="info"><h3>Misto-Quente</h3><input type="text" id="obs-Misto-Quente" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Misto-Quente')">-</button><span id="qtd-Misto-Quente" class="quantidade">0</span><button onclick="addItem('Misto-Quente', 10)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>Contra-file</h3><input type="text" id="obs-Contra-file" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('Contra-file')">-</button><span id="qtd-Contra-file" class="quantidade">0</span><button onclick="addItem('Contra-file', 20)">+</button></div></div></div>
 
-    <h2>🥤 Bebidas</h2>
-<div class="item"><div class="info"><h3>Coca-Lata</h3></div><div class="rodape-item"><div class="preco">R$ 7,00</div><div class="acoes"><button onclick="removerItem('Coca-Lata')">-</button><span id="qtd-Coca-Lata" class="quantidade">0</span><button onclick="addItem('Coca-Lata', 7)">+</button></div></div></div>
-<div class="item"><div class="info"><h3>Coca-600</h3></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Coca-600')">-</button><span id="qtd-Coca-600" class="quantidade">0</span><button onclick="addItem('Coca-600', 10)">+</button></div></div></div>
-<div class="item"><div class="info"><h3>Coca-1L</h3></div><div class="rodape-item"><div class="preco">R$ 12,00</div><div class="acoes"><button onclick="removerItem('Coca-1L')">-</button><span id="qtd-Coca-1L" class="quantidade">0</span><button onclick="addItem('Coca-1L', 12)">+</button></div></div></div>
-<div class="item"><div class="info"><h3>Guarana-Fanta</h3></div><div class="rodape-item"><div class="preco">R$ 7,00</div><div class="acoes"><button onclick="removerItem('Guarana-Fanta')">-</button><span id="qtd-Guarana-Fanta" class="quantidade">0</span><button onclick="addItem('Guarana-Fanta', 7)">+</button></div></div></div>
-<div class="item"><div class="info"><h3>Suco-Laranja</h3></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Suco-Laranja')">-</button><span id="qtd-Suco-Laranja" class="quantidade">0</span><button onclick="addItem('Suco-Laranja', 10)">+</button></div></div></div>
-<div class="item"><div class="info"><h3>Suco-Maracuja</h3></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Suco-Maracuja')">-</button><span id="qtd-Suco-Maracuja" class="quantidade">0</span><button onclick="addItem('Suco-Maracuja', 10)">+</button></div></div></div>
+    <h2>🥤 Bebidas & Sucos</h2>
+    <div class="item"><div class="info"><h3>Coca-Lata</h3></div><div class="rodape-item"><div class="preco">R$ 7,00</div><div class="acoes"><button onclick="removerItem('Coca-Lata')">-</button><span id="qtd-Coca-Lata" class="quantidade">0</span><button onclick="addItem('Coca-Lata', 7)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>Suco-Laranja</h3></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Suco-Laranja')">-</button><span id="qtd-Suco-Laranja" class="quantidade">0</span><button onclick="addItem('Suco-Laranja', 10)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>Suco-Maracuja</h3></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Suco-Maracuja')">-</button><span id="qtd-Suco-Maracuja" class="quantidade">0</span><button onclick="addItem('Suco-Maracuja', 10)">+</button></div></div></div>
 
     <h2>💧 Águas</h2>
-    <div class="item"><div class="info"><h3>Água sem Gás</h3></div><div class="rodape-item"><div class="preco">R$ 3,00</div><div class="acoes"><button onclick="removerItem('Agua-sem')">-</button><span id="qtd-Agua-sem" class="quantidade">0</span><button onclick="addItem('Agua-sem', 3)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>Água com Gás</h3></div><div class="rodape-item"><div class="preco">R$ 4,00</div><div class="acoes"><button onclick="removerItem('Agua-com')">-</button><span id="qtd-Agua-com" class="quantidade">0</span><button onclick="addItem('Agua-com', 4)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>Agua-sem</h3></div><div class="rodape-item"><div class="preco">R$ 3,00</div><div class="acoes"><button onclick="removerItem('Agua-sem')">-</button><span id="qtd-Agua-sem" class="quantidade">0</span><button onclick="addItem('Agua-sem', 3)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>Agua-com</h3></div><div class="rodape-item"><div class="preco">R$ 4,00</div><div class="acoes"><button onclick="removerItem('Agua-com')">-</button><span id="qtd-Agua-com" class="quantidade">0</span><button onclick="addItem('Agua-com', 4)">+</button></div></div></div>
 
     <h2>🍺 Cervejas</h2>
-    <div class="item"><div class="info"><h3>Cerveja Heineken</h3></div><div class="rodape-item"><div class="preco">R$ 9,00</div><div class="acoes"><button onclick="removerItem('Heineken')">-</button><span id="qtd-Heineken" class="quantidade">0</span><button onclick="addItem('Heineken', 9)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>Cerveja Brahma</h3></div><div class="rodape-item"><div class="preco">R$ 6,00</div><div class="acoes"><button onclick="removerItem('Brahma')">-</button><span id="qtd-Brahma" class="quantidade">0</span><button onclick="addItem('Brahma', 6)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>Cerveja Skol</h3></div><div class="rodape-item"><div class="preco">R$ 6,00</div><div class="acoes"><button onclick="removerItem('Skol')">-</button><span id="qtd-Skol" class="quantidade">0</span><button onclick="addItem('Skol', 6)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>Heineken</h3></div><div class="rodape-item"><div class="preco">R$ 9,00</div><div class="acoes"><button onclick="removerItem('Heineken')">-</button><span id="qtd-Heineken" class="quantidade">0</span><button onclick="addItem('Heineken', 9)">+</button></div></div></div>
 
-    <h2>➕ Adicionais</h2>
-    <div class="item"><div class="info"><h3>Hambúrguer Extra</h3></div><div class="rodape-item"><div class="preco">R$ 5,00</div><div class="acoes"><button onclick="removerItem('Hamb-Extra')">-</button><span id="qtd-Hamb-Extra" class="quantidade">0</span><button onclick="addItem('Hamb-Extra', 5)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>Bacon Extra</h3></div><div class="rodape-item"><div class="preco">R$ 5,00</div><div class="acoes"><button onclick="removerItem('Bacon-Extra')">-</button><span id="qtd-Bacon-Extra" class="quantidade">0</span><button onclick="addItem('Bacon-Extra', 5)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>Ovo Extra</h3></div><div class="rodape-item"><div class="preco">R$ 3,00</div><div class="acoes"><button onclick="removerItem('Ovo-Extra')">-</button><span id="qtd-Ovo-Extra" class="quantidade">0</span><button onclick="addItem('Ovo-Extra', 3)">+</button></div></div></div>
-
-    <hr style="border: 1px dashed #ffc107; margin: 40px 0;">
-    <h2>📑 PEDIDOS EM CONSUMO</h2>
-    <div id="lista-consumo"></div>
+    <div id="lista-consumo" style="margin-top: 40px;"></div>
 
     <div class="painel-caixa">
-        <h3>💰 TOTAL VENDIDO NO DIA</h3>
+        <h3>💰 FATURAMENTO DO DIA</h3>
         <div class="venda-valor" id="faturamento-dia">R$ 0,00</div>
-        <button class="btn-zerar" onclick="window.zerarCaixa()">REINICIAR CAIXA DO DIA</button>
     </div>
 </main>
 
@@ -118,23 +94,25 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // --- NOVA FUNÇÃO: FICHA TÉCNICA PARA INTEGRAÇÃO COM SITE C ---
     const FICHA_TECNICA = {
-        "X-burguer": { "Pão de Lanche": 1, "Hambúrguer": 1 },
-        "X-Salada": { "Pão de Lanche": 1, "Hambúrguer": 1, "Alface": 1 },
-        "X-EGG": { "Pão de Lanche": 1, "Hambúrguer": 1 },
+        "X-burguer": { "Hambúrguer": 1, "Pão de Lanche": 1 },
+        "X-Salada": { "Hambúrguer": 1, "Pão de Lanche": 1, "Alface": 1 },
+        "X-EGG": { "Hambúrguer": 1, "Pão de Lanche": 1 },
+        "X-Bacon": { "Hambúrguer": 1, "Pão de Lanche": 1 },
         "Misto-Quente": { "Pão Francês": 1 },
+        "Contra-file": { "Pão Francês": 1 },
         "Heineken": { "Cerveja": 1 },
-        "Brahma": { "Cerveja": 1 },
-        "Skol": { "Cerveja": 1 },
-        "Suco": { "Laranja": 3 } // Exemplo: Remove 3 laranjas por suco
+        "Suco-Laranja": { "Suco de Laranja": 1 },
+        "Suco-Maracuja": { "Suco de Maracujá": 1 },
+        "Agua-sem": { "Água Mineral": 1 },
+        "Agua-com": { "Água Mineral": 1 }
     };
 
     let carrinhoAtual = {}; 
     let itensConsumidos = {}; 
 
     window.addItem = (n, p) => { 
-        if(!carrinhoAtual[n]) carrinhoAtual[n] = {qtd:0, preco:p, status: "pendente"}; 
+        if(!carrinhoAtual[n]) carrinhoAtual[n] = {qtd:0, preco:p}; 
         carrinhoAtual[n].qtd++; 
         atualizarUI(); 
     };
@@ -161,34 +139,25 @@
     window.finalizarPedido = function() {
         const idEd = document.getElementById('pedido-id-edicao').value;
         const cli = document.getElementById('nome-cliente').value;
-        if(!cli || (Object.keys(carrinhoAtual).length === 0 && Object.keys(itensConsumidos).length === 0)) return alert("Selecione os itens!");
+        if(!cli) return alert("Informe o cliente/mesa");
 
         let dadosDetaFinal = { ...itensConsumidos };
         
-        // --- ADICIONADO: Lógica de Baixa no Estoque ao Finalizar ---
         for(let id in carrinhoAtual) {
             const obs = document.getElementById(`obs-${id}`)?.value || "";
             const chaveUnica = idEd ? `${id}_${Date.now()}` : id;
             
-            // Grava o item no detalhe do pedido
             dadosDetaFinal[chaveUnica] = {
                 nome: id.replace(/-/g, ' '),
                 qtd: carrinhoAtual[id].qtd,
                 preco: carrinhoAtual[id].preco,
-                obs: obs,
-                status: "pendente"
+                obs: obs
             };
 
-            // SE EXISTIR NA FICHA TÉCNICA, ENVIA A SAÍDA PARA O FIREBASE
             if(FICHA_TECNICA[id]) {
                 for(let insumo in FICHA_TECNICA[id]) {
-                    const qtdGasto = FICHA_TECNICA[id][insumo] * carrinhoAtual[id].qtd;
-                    // Registra a saída no mesmo local que o Site C lê
-                    push(ref(db, `saidas_estoque/${insumo}`), { 
-                        qtd: qtdGasto, 
-                        data: new Date().toISOString(),
-                        cliente: cli 
-                    });
+                    const gasto = FICHA_TECNICA[id][insumo] * carrinhoAtual[id].qtd;
+                    push(ref(db, `saidas_estoque/${insumo}`), { qtd: gasto, data: new Date().toISOString() });
                 }
             }
         }
@@ -197,44 +166,25 @@
         let valorFinal = 0;
         for(let k in dadosDetaFinal) {
             const it = dadosDetaFinal[k];
-            textoTotal += `${it.qtd}x ${it.nome}${it.obs ? ' ('+it.obs+')' : ''}\n`;
+            textoTotal += `${it.qtd}x ${it.nome} ${it.obs ? '('+it.obs+')' : ''}\n`;
             valorFinal += (it.qtd * it.preco);
         }
 
-        const payload = { 
-            cliente: cli, 
-            itens: textoTotal, 
-            itensDeta: dadosDetaFinal, 
-            total: valorFinal.toFixed(2), 
-            status: "em_preparo" 
-        };
-
-        if(idEd) {
-            update(ref(db, `pedidos/${idEd}`), payload).then(() => location.reload());
-        } else {
-            push(ref(db, 'pedidos'), payload).then(() => location.reload());
-        }
+        const payload = { cliente: cli, itens: textoTotal, itensDeta: dadosDetaFinal, total: valorFinal.toFixed(2), status: "pendente" };
+        if(idEd) update(ref(db, `pedidos/${idEd}`), payload).then(() => location.reload());
+        else push(ref(db, 'pedidos'), payload).then(() => location.reload());
     };
 
     onValue(ref(db, 'pedidos'), (snapshot) => {
         const pedidos = snapshot.val();
         const container = document.getElementById('lista-consumo');
-        container.innerHTML = ""; 
+        container.innerHTML = "<h2>📑 EM CONSUMO</h2>"; 
         if (!pedidos) return;
-
         Object.keys(pedidos).forEach(id => {
             const p = pedidos[id];
-            const estaPronto = p.status === "pronto";
             const card = document.createElement('div');
-            card.className = `card-consumo ${estaPronto ? 'pronto' : ''}`;
-            
-            card.innerHTML = `
-                <strong>👤 ${p.cliente} ${estaPronto ? '✅' : ''}</strong>
-                <div class="lista-itens">${p.itens}</div>
-                <div class="total-consumo">R$ ${p.total}</div>
-                <button class="btn-edit btn-acao" onclick="window.retomar('${id}', '${p.cliente}', ${JSON.stringify(p.itensDeta).replace(/"/g, '&quot;')})">ADICIONAR MAIS ITENS ➕</button>
-                <button class="btn-fechar btn-acao" onclick="window.receberERegistrar('${id}', ${p.total})">FECHAR CONTA 🏁</button>
-            `;
+            card.className = `card-consumo`;
+            card.innerHTML = `<strong>👤 ${p.cliente}</strong><div class="lista-itens">${p.itens}</div><div class="total-consumo">R$ ${p.total}</div><button class="btn-edit btn-acao" onclick="window.retomar('${id}', '${p.cliente}', ${JSON.stringify(p.itensDeta).replace(/"/g, '&quot;')})">ADICIONAR +</button><button class="btn-fechar btn-acao" onclick="window.fechar('${id}', ${p.total})">FECHAR CONTA</button>`;
             container.appendChild(card);
         });
     });
@@ -243,8 +193,8 @@
         document.getElementById('faturamento-dia').innerText = `R$ ${parseFloat(snap.val() || 0).toFixed(2)}`;
     });
 
-    window.receberERegistrar = (id, valor) => {
-        if(confirm(`Confirmar pagamento de R$ ${valor}?`)) {
+    window.fechar = (id, valor) => {
+        if(confirm(`Fechar conta de R$ ${valor}?`)) {
             onValue(ref(db, 'historico_vendas/faturamento_total'), (snap) => {
                 const novoTotal = parseFloat(snap.val() || 0) + parseFloat(valor);
                 set(ref(db, 'historico_vendas/faturamento_total'), novoTotal);
@@ -253,21 +203,12 @@
         }
     };
 
-    window.zerarCaixa = () => { if(confirm("Zerar caixa do dia?")) set(ref(db, 'historico_vendas/faturamento_total'), 0); };
-
     window.retomar = (id, cli, itensAntigos) => {
         document.getElementById('pedido-id-edicao').value = id;
         document.getElementById('nome-cliente').value = cli;
         document.getElementById('aviso-edicao').style.display = "block";
-        itensConsumidos = {};
-        for(let k in itensAntigos) {
-            itensConsumidos[k] = itensAntigos[k];
-            itensConsumidos[k].status = "feito"; 
-        }
-        carrinhoAtual = {}; 
+        itensConsumidos = itensAntigos;
         atualizarUI();
-        window.scrollTo(0,0);
-        document.getElementById('enviar').innerText = "ATUALIZAR CONSUMO";
     };
 </script>
 </body>
