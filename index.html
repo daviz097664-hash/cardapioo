@@ -117,6 +117,18 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    // --- NOVA FUNÇÃO: FICHA TÉCNICA PARA INTEGRAÇÃO COM SITE C ---
+    const FICHA_TECNICA = {
+        "X-burguer": { "Pão de Lanche": 1, "Hambúrguer": 1 },
+        "X-Salada": { "Pão de Lanche": 1, "Hambúrguer": 1, "Alface": 1 },
+        "X-EGG": { "Pão de Lanche": 1, "Hambúrguer": 1 },
+        "Misto-Quente": { "Pão Francês": 1 },
+        "Heineken": { "Cerveja": 1 },
+        "Brahma": { "Cerveja": 1 },
+        "Skol": { "Cerveja": 1 },
+        "Suco": { "Laranja": 3 } // Exemplo: Remove 3 laranjas por suco
+    };
+
     let carrinhoAtual = {}; 
     let itensConsumidos = {}; 
 
@@ -151,9 +163,13 @@
         if(!cli || (Object.keys(carrinhoAtual).length === 0 && Object.keys(itensConsumidos).length === 0)) return alert("Selecione os itens!");
 
         let dadosDetaFinal = { ...itensConsumidos };
+        
+        // --- ADICIONADO: Lógica de Baixa no Estoque ao Finalizar ---
         for(let id in carrinhoAtual) {
             const obs = document.getElementById(`obs-${id}`)?.value || "";
             const chaveUnica = idEd ? `${id}_${Date.now()}` : id;
+            
+            // Grava o item no detalhe do pedido
             dadosDetaFinal[chaveUnica] = {
                 nome: id.replace(/-/g, ' '),
                 qtd: carrinhoAtual[id].qtd,
@@ -161,6 +177,19 @@
                 obs: obs,
                 status: "pendente"
             };
+
+            // SE EXISTIR NA FICHA TÉCNICA, ENVIA A SAÍDA PARA O FIREBASE
+            if(FICHA_TECNICA[id]) {
+                for(let insumo in FICHA_TECNICA[id]) {
+                    const qtdGasto = FICHA_TECNICA[id][insumo] * carrinhoAtual[id].qtd;
+                    // Registra a saída no mesmo local que o Site C lê
+                    push(ref(db, `saidas_estoque/${insumo}`), { 
+                        qtd: qtdGasto, 
+                        data: new Date().toISOString(),
+                        cliente: cli 
+                    });
+                }
+            }
         }
 
         let textoTotal = "";
@@ -176,7 +205,7 @@
             itens: textoTotal, 
             itensDeta: dadosDetaFinal, 
             total: valorFinal.toFixed(2), 
-            status: "em_preparo" // Volta para "em_preparo" sempre que adicionar algo novo
+            status: "em_preparo" 
         };
 
         if(idEd) {
@@ -196,7 +225,6 @@
             const p = pedidos[id];
             const estaPronto = p.status === "pronto";
             const card = document.createElement('div');
-            // ADICIONA A CLASSE "PRONTO" PARA FICAR VERDE
             card.className = `card-consumo ${estaPronto ? 'pronto' : ''}`;
             
             card.innerHTML = `
