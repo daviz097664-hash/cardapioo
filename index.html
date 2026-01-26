@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garçom - Site A (Oficial)</title>
+    <title>Garçom - Site A</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #000; color: #fff; font-family: sans-serif; padding: 20px; padding-bottom: 150px; }
@@ -20,7 +20,11 @@
         .acoes { display: flex; align-items: center; gap: 15px; }
         .acoes button { background: #ffc107; border: none; width: 40px; height: 40px; font-size: 1.4rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
         .quantidade { font-size: 1.4rem; font-weight: bold; min-width: 25px; text-align: center; }
-        .card-consumo { background: #111; border: 1px solid #ffc107; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 6px solid #ffc107; }
+        
+        /* ESTILO DO CARD DE CONSUMO COM BORDA DINÂMICA */
+        .card-consumo { background: #111; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 8px solid #ffc107; transition: 0.3s; }
+        .card-consumo.pronto { border-left-color: #4caf50 !important; border-color: #4caf50; }
+        
         .lista-itens { color: #eee; font-size: 0.95rem; line-height: 1.4; white-space: pre-wrap; margin-bottom: 15px; background: #1a1a1a; padding: 10px; border-radius: 5px; }
         .total-consumo { color: #4caf50; font-weight: bold; font-size: 1.2rem; text-align: right; margin-bottom: 10px; }
         .btn-acao { border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%; }
@@ -31,7 +35,6 @@
         #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
         .aviso-edit { background: #d32f2f; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: none; text-align: center; font-weight: bold; }
         
-        /* Estilo do Caixa */
         .painel-caixa { background: #1a1a1a; border: 2px solid #4caf50; padding: 20px; border-radius: 15px; margin-top: 50px; text-align: center; }
         .venda-valor { font-size: 2.2rem; color: #4caf50; font-weight: bold; margin: 10px 0; }
         .btn-zerar { background: #444; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; margin-top: 10px; }
@@ -40,9 +43,7 @@
 <body>
 
 <header><h1>Garçom - Site A</h1></header>
-
 <div id="aviso-edicao" class="aviso-edit">MODO ADICIONAR ITENS</div>
-
 <div class="secao-identificacao">
     <input type="hidden" id="pedido-id-edicao">
     <input type="text" id="nome-cliente" placeholder="NOME DO CLIENTE OU MESA">
@@ -52,9 +53,9 @@
     <h2>🍔 Hambúrgueres</h2>
     <div class="item"><div class="info"><h3>X-burguer</h3><p>Hambúrguer, presunto, mussarela, ketchup e maionese</p><input type="text" id="obs-X-burguer" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 16,00</div><div class="acoes"><button onclick="removerItem('X-burguer')">-</button><span id="qtd-X-burguer" class="quantidade">0</span><button onclick="addItem('X-burguer', 16)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>X-Salada</h3><p>Hambúrguer, presunto, mussarela, salada e maionese</p><input type="text" id="obs-X-Salada" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 18,00</div><div class="acoes"><button onclick="removerItem('X-Salada')">-</button><span id="qtd-X-Salada" class="quantidade">0</span><button onclick="addItem('X-Salada', 18)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-EGG</h3><p>Hambúrguer, ovo, presunto, mussarela e salada</p><input type="text" id="obs-X-EGG" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('X-EGG')">-</button><span id="qtd-X-EGG" class="quantidade">0</span><button onclick="addItem('X-EGG', 20)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-Bacon</h3><p>Hambúrguer, bacon, presunto, mussarela e salada</p><input type="text" id="obs-X-Bacon" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 25,00</div><div class="acoes"><button onclick="removerItem('X-Bacon')">-</button><span id="qtd-X-Bacon" class="quantidade">0</span><button onclick="addItem('X-Bacon', 25)">+</button></div></div></div>
-    <div class="item"><div class="info"><h3>X-Tudo</h3><p>Hambúrguer, bacon, ovo, presunto, mussarela e salada</p><input type="text" id="obs-X-Tudo" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 28,00</div><div class="acoes"><button onclick="removerItem('X-Tudo')">-</button><span id="qtd-X-Tudo" class="quantidade">0</span><button onclick="addItem('X-Tudo', 28)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>X-EGG</h3><input type="text" id="obs-X-EGG" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('X-EGG')">-</button><span id="qtd-X-EGG" class="quantidade">0</span><button onclick="addItem('X-EGG', 20)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>X-Bacon</h3><input type="text" id="obs-X-Bacon" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 25,00</div><div class="acoes"><button onclick="removerItem('X-Bacon')">-</button><span id="qtd-X-Bacon" class="quantidade">0</span><button onclick="addItem('X-Bacon', 25)">+</button></div></div></div>
+    <div class="item"><div class="info"><h3>X-Tudo</h3><input type="text" id="obs-X-Tudo" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 28,00</div><div class="acoes"><button onclick="removerItem('X-Tudo')">-</button><span id="qtd-X-Tudo" class="quantidade">0</span><button onclick="addItem('X-Tudo', 28)">+</button></div></div></div>
 
     <h2>🥖 No Pão Francês</h2>
     <div class="item"><div class="info"><h3>Misto Quente</h3><input type="text" id="obs-Misto-Quente" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Misto-Quente')">-</button><span id="qtd-Misto-Quente" class="quantidade">0</span><button onclick="addItem('Misto-Quente', 10)">+</button></div></div></div>
@@ -62,7 +63,7 @@
     <div class="item"><div class="info"><h3>X-Calabresa</h3><input type="text" id="obs-X-Calabresa" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 15,00</div><div class="acoes"><button onclick="removerItem('X-Calabresa')">-</button><span id="qtd-X-Calabresa" class="quantidade">0</span><button onclick="addItem('X-Calabresa', 15)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>Contra-filé</h3><input type="text" id="obs-Contra-file" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('Contra-file')">-</button><span id="qtd-Contra-file" class="quantidade">0</span><button onclick="addItem('Contra-file', 20)">+</button></div></div></div>
 
-    <h2>🥤 Bebidas e Sucos</h2>
+    <h2>🥤 Bebidas</h2>
     <div class="item"><div class="info"><h3>Coca Lata</h3></div><div class="rodape-item"><div class="preco">R$ 7,00</div><div class="acoes"><button onclick="removerItem('Coca-Lata')">-</button><span id="qtd-Coca-Lata" class="quantidade">0</span><button onclick="addItem('Coca-Lata', 7)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>Coca 600ml</h3></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Coca-600')">-</button><span id="qtd-Coca-600" class="quantidade">0</span><button onclick="addItem('Coca-600', 10)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>Coca 1 Litro</h3></div><div class="rodape-item"><div class="preco">R$ 12,00</div><div class="acoes"><button onclick="removerItem('Coca-1L')">-</button><span id="qtd-Coca-1L" class="quantidade">0</span><button onclick="addItem('Coca-1L', 12)">+</button></div></div></div>
@@ -166,11 +167,17 @@
         let valorFinal = 0;
         for(let k in dadosDetaFinal) {
             const it = dadosDetaFinal[k];
-            textoTotal += `${it.qtd}x ${it.nome}${it.obs ? ' ('+it.obs+')' : ''} [${it.status === 'feito' ? 'OK' : 'NOVO'}]\n`;
+            textoTotal += `${it.qtd}x ${it.nome}${it.obs ? ' ('+it.obs+')' : ''}\n`;
             valorFinal += (it.qtd * it.preco);
         }
 
-        const payload = { cliente: cli, itens: textoTotal, itensDeta: dadosDetaFinal, total: valorFinal.toFixed(2), status: "em_preparo" };
+        const payload = { 
+            cliente: cli, 
+            itens: textoTotal, 
+            itensDeta: dadosDetaFinal, 
+            total: valorFinal.toFixed(2), 
+            status: "em_preparo" // Volta para "em_preparo" sempre que adicionar algo novo
+        };
 
         if(idEd) {
             update(ref(db, `pedidos/${idEd}`), payload).then(() => location.reload());
@@ -187,10 +194,13 @@
 
         Object.keys(pedidos).forEach(id => {
             const p = pedidos[id];
+            const estaPronto = p.status === "pronto";
             const card = document.createElement('div');
-            card.className = "card-consumo";
+            // ADICIONA A CLASSE "PRONTO" PARA FICAR VERDE
+            card.className = `card-consumo ${estaPronto ? 'pronto' : ''}`;
+            
             card.innerHTML = `
-                <strong>👤 ${p.cliente}</strong>
+                <strong>👤 ${p.cliente} ${estaPronto ? '✅' : ''}</strong>
                 <div class="lista-itens">${p.itens}</div>
                 <div class="total-consumo">R$ ${p.total}</div>
                 <button class="btn-edit btn-acao" onclick="window.retomar('${id}', '${p.cliente}', ${JSON.stringify(p.itensDeta).replace(/"/g, '&quot;')})">ADICIONAR MAIS ITENS ➕</button>
