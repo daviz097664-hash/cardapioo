@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garçom - Cardápio Completo</title>
+    <title>Garçom - Site A (Completo)</title>
     <style>
-        /* Mantendo seu CSS original para não mudar o visual que você já gosta */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #000; color: #fff; font-family: sans-serif; padding: 20px; padding-bottom: 150px; }
         header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #ffc107; padding-bottom: 10px; }
@@ -24,21 +23,21 @@
         .card-consumo { background: #111; border: 1px solid #ffc107; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 6px solid #ffc107; }
         .lista-itens { color: #eee; font-size: 0.95rem; line-height: 1.4; white-space: pre-wrap; margin-bottom: 15px; background: #1a1a1a; padding: 10px; border-radius: 5px; }
         .total-consumo { color: #4caf50; font-weight: bold; font-size: 1.2rem; text-align: right; margin-bottom: 10px; }
-        .status-tag { font-size: 0.8rem; font-weight: bold; padding: 5px 10px; border-radius: 5px; text-transform: uppercase; }
         .btn-acao { border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%; }
         .btn-edit { background: #2196f3; color: white; margin-bottom: 5px; }
         .btn-fechar { background: #b02a37; color: white; margin-top: 10px; }
         .rodape-fixo { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 20px; border-top: 2px solid #ffc107; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         #total { font-size: 1.3rem; font-weight: bold; color: #ffc107; }
         #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
-        .painel-caixa { background: #1a1a1a; border: 2px solid #4caf50; padding: 20px; border-radius: 15px; margin-top: 50px; text-align: center; }
-        .venda-valor { font-size: 2.2rem; color: #4caf50; font-weight: bold; margin: 10px 0; }
-        .btn-zerar { background: #444; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; margin-top: 10px; }
+        .aviso-edit { background: #d32f2f; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: none; text-align: center; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <header><h1>Garçom - Site A</h1></header>
+
+<div id="aviso-edicao" class="aviso-edit">MODO ADICIONAR ITENS</div>
+
 <div class="secao-identificacao">
     <input type="hidden" id="pedido-id-edicao">
     <input type="text" id="nome-cliente" placeholder="NOME DO CLIENTE OU MESA">
@@ -80,14 +79,8 @@
     <div class="item"><div class="info"><h3>Ovo Extra</h3></div><div class="rodape-item"><div class="preco">R$ 3,00</div><div class="acoes"><button onclick="removerItem('Ovo-Extra')">-</button><span id="qtd-Ovo-Extra" class="quantidade">0</span><button onclick="addItem('Ovo-Extra', 3)">+</button></div></div></div>
 
     <hr style="border: 1px dashed #ffc107; margin: 40px 0;">
-    <h2>📑 PEDIDOS EM CONSUMO (MESAS)</h2>
+    <h2>📑 PEDIDOS EM CONSUMO</h2>
     <div id="lista-consumo"></div>
-
-    <div class="painel-caixa">
-        <h3>💰 TOTAL VENDIDO NO DIA</h3>
-        <div class="venda-valor" id="faturamento-dia">R$ 0,00</div>
-        <button class="btn-zerar" onclick="window.zerarCaixa()">REINICIAR CAIXA DO DIA</button>
-    </div>
 </main>
 
 <footer class="rodape-fixo">
@@ -111,53 +104,67 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-    let carrinho = {};
-    let totalGeral = 0;
+
+    let carrinhoAtual = {}; 
+    let itensConsumidos = {}; 
 
     window.addItem = (n, p) => { 
-        if(!carrinho[n]) carrinho[n] = {qtd:0, preco:p, status: "pendente"}; 
-        carrinho[n].qtd++; 
+        if(!carrinhoAtual[n]) carrinhoAtual[n] = {qtd:0, preco:p, status: "pendente"}; 
+        carrinhoAtual[n].qtd++; 
         atualizarUI(); 
     };
 
     window.removerItem = (n) => { 
-        if(carrinho[n] && carrinho[n].qtd > 0){ 
-            carrinho[n].qtd--; 
-            if(carrinho[n].qtd === 0) delete carrinho[n]; 
+        if(carrinhoAtual[n] && carrinhoAtual[n].qtd > 0){ 
+            carrinhoAtual[n].qtd--; 
+            if(carrinhoAtual[n].qtd === 0) delete carrinhoAtual[n]; 
         } 
         atualizarUI(); 
     };
 
     function atualizarUI() {
-        totalGeral = 0;
+        let subtotal = 0;
         document.querySelectorAll('.quantidade').forEach(span => {
             const id = span.id.replace('qtd-', '');
-            span.innerText = carrinho[id] ? carrinho[id].qtd : 0;
+            span.innerText = carrinhoAtual[id] ? carrinhoAtual[id].qtd : 0;
         });
-        for(let id in carrinho) totalGeral += (carrinho[id].qtd * carrinho[id].preco);
-        document.getElementById('total').innerText = `Total: R$ ${totalGeral.toFixed(2)}`;
+        for(let id in carrinhoAtual) subtotal += (carrinhoAtual[id].qtd * carrinhoAtual[id].preco);
+        for(let id in itensConsumidos) subtotal += (itensConsumidos[id].qtd * itensConsumidos[id].preco);
+        document.getElementById('total').innerText = `Total: R$ ${subtotal.toFixed(2)}`;
     }
 
     window.finalizarPedido = function() {
         const idEd = document.getElementById('pedido-id-edicao').value;
         const cli = document.getElementById('nome-cliente').value;
-        if(!cli || totalGeral === 0) return alert("Preencha o nome e selecione os itens!");
+        if(!cli || (Object.keys(carrinhoAtual).length === 0 && Object.keys(itensConsumidos).length === 0)) return alert("Selecione os itens!");
 
-        let txt = "";
-        let itensDeta = {};
-        for(let id in carrinho) {
+        let dadosDetaFinal = { ...itensConsumidos };
+        for(let id in carrinhoAtual) {
             const obs = document.getElementById(`obs-${id}`)?.value || "";
-            const nomeFormatado = id.replace(/-/g, ' ');
-            itensDeta[id] = { nome: nomeFormatado, qtd: carrinho[id].qtd, obs: obs, status: carrinho[id].status || "pendente" };
-            txt += `${carrinho[id].qtd}x ${nomeFormatado}${obs ? ' ('+obs+')' : ''}\n`;
+            const chaveUnica = idEd ? `${id}_${Date.now()}` : id;
+            dadosDetaFinal[chaveUnica] = {
+                nome: id.replace(/-/g, ' '),
+                qtd: carrinhoAtual[id].qtd,
+                preco: carrinhoAtual[id].preco,
+                obs: obs,
+                status: "pendente"
+            };
         }
 
-        const dados = { cliente: cli, itens: txt, itensDeta: itensDeta, total: totalGeral.toFixed(2), status: "em_preparo", rawCarrinho: carrinho };
-        
+        let textoTotal = "";
+        let valorFinal = 0;
+        for(let k in dadosDetaFinal) {
+            const it = dadosDetaFinal[k];
+            textoTotal += `${it.qtd}x ${it.nome}${it.obs ? ' ('+it.obs+')' : ''} [${it.status === 'feito' ? 'OK' : 'NOVO'}]\n`;
+            valorFinal += (it.qtd * it.preco);
+        }
+
+        const payload = { cliente: cli, itens: textoTotal, itensDeta: dadosDetaFinal, total: valorFinal.toFixed(2), status: "em_preparo" };
+
         if(idEd) {
-            update(ref(db, `pedidos/${idEd}`), dados).then(() => location.reload());
+            update(ref(db, `pedidos/${idEd}`), payload).then(() => location.reload());
         } else {
-            push(ref(db, 'pedidos'), dados).then(() => location.reload());
+            push(ref(db, 'pedidos'), payload).then(() => location.reload());
         }
     };
 
@@ -169,45 +176,41 @@
 
         Object.keys(pedidos).forEach(id => {
             const p = pedidos[id];
-            const cor = p.status === "pronto" ? "#4caf50" : "#ffc107";
             const card = document.createElement('div');
             card.className = "card-consumo";
-            card.style.borderLeftColor = cor;
             card.innerHTML = `
-                <strong>👤 Mesa: ${p.cliente}</strong>
+                <strong>👤 ${p.cliente}</strong>
                 <div class="lista-itens">${p.itens}</div>
                 <div class="total-consumo">R$ ${p.total}</div>
-                <button class="btn-edit btn-acao" onclick="window.retomar('${id}', '${p.cliente}', ${JSON.stringify(p.rawCarrinho).replace(/"/g, '&quot;')})">EDITAR / ADICIONAR ✏️</button>
-                <button class="btn-fechar btn-acao" onclick="window.receberERegistrar('${id}', ${p.total})">FECHAR CONTA 🏁</button>
+                <button class="btn-edit btn-acao" onclick="window.retomar('${id}', '${p.cliente}', ${JSON.stringify(p.itensDeta).replace(/"/g, '&quot;')})">ADICIONAR MAIS ITENS ➕</button>
+                <button class="btn-fechar btn-acao" onclick="window.fecharConta('${id}', ${p.total})">FECHAR CONTA 🏁</button>
             `;
             container.appendChild(card);
         });
     });
 
-    onValue(ref(db, 'historico_vendas/faturamento_total'), (snap) => {
-        document.getElementById('faturamento-dia').innerText = `R$ ${parseFloat(snap.val() || 0).toFixed(2)}`;
-    });
-
-    window.receberERegistrar = (id, valor) => {
-        if(confirm(`Confirmar pagamento de R$ ${valor}?`)) {
-            onValue(ref(db, 'historico_vendas/faturamento_total'), (snap) => {
-                set(ref(db, 'historico_vendas/faturamento_total'), parseFloat(snap.val() || 0) + parseFloat(valor));
-            }, { onlyOnce: true });
-            remove(ref(db, `pedidos/${id}`));
-        }
-    };
-
-    window.zerarCaixa = () => { if(confirm("Zerar caixa?")) set(ref(db, 'historico_vendas/faturamento_total'), 0); };
-    
-    window.retomar = (id, cli, car) => {
+    window.retomar = (id, cli, itensAntigos) => {
         document.getElementById('pedido-id-edicao').value = id;
         document.getElementById('nome-cliente').value = cli;
-        // Marca itens antigos como "feito" para a cozinha saber o que é novo
-        for(let key in car) { car[key].status = "feito"; }
-        carrinho = car;
+        document.getElementById('aviso-edicao').style.display = "block";
+        itensConsumidos = {};
+        for(let k in itensAntigos) {
+            itensConsumidos[k] = itensAntigos[k];
+            itensConsumidos[k].status = "feito"; 
+        }
+        carrinhoAtual = {}; 
         atualizarUI();
         window.scrollTo(0,0);
-        document.getElementById('enviar').innerText = "ATUALIZAR PEDIDO";
+        document.getElementById('enviar').innerText = "ADICIONAR NOVOS ITENS";
+    };
+
+    window.fecharConta = (id, valor) => {
+        if(confirm("Encerrar mesa?")) {
+            onValue(ref(db, 'historico_vendas/faturamento_total'), (s) => {
+                set(ref(db, 'historico_vendas/faturamento_total'), parseFloat(s.val() || 0) + parseFloat(valor));
+            }, {onlyOnce: true});
+            remove(ref(db, `pedidos/${id}`));
+        }
     };
 </script>
 </body>
