@@ -7,9 +7,7 @@
     
     <link rel="icon" type="image/jpeg" href="IMG_4557.jpeg">
     <link rel="apple-touch-icon" href="IMG_4557.jpeg">
-    <link rel="apple-touch-icon" sizes="180x180" href="IMG_4557.jpeg">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Garçom">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,40 +22,35 @@
 
         h2 { color: #ffc107; margin: 25px 0 10px 0; border-left: 4px solid #ffc107; padding-left: 10px; font-size: 1.2rem; text-transform: uppercase; }
         
-        .item { 
-            background: #111; border: 1px solid #333; border-radius: 10px; 
-            padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; 
-        }
+        .item { background: #111; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
         .info h3 { color: #fff; margin-bottom: 2px; font-size: 1.1rem; }
         .info p { color: #aaa; font-size: 0.85rem; margin-bottom: 10px; line-height: 1.2; }
         
-        .input-obs {
-            background: #1a1a1a; border: 1px solid #444; color: #ffc107;
-            padding: 10px; border-radius: 5px; width: 100%; font-size: 0.9rem; margin-bottom: 12px;
-        }
-
+        .input-obs { background: #1a1a1a; border: 1px solid #444; color: #ffc107; padding: 10px; border-radius: 5px; width: 100%; font-size: 0.9rem; margin-bottom: 12px; }
         .rodape-item { display: flex; justify-content: space-between; align-items: center; }
         .preco { color: #4caf50; font-weight: bold; font-size: 1.1rem; }
-        
         .acoes { display: flex; align-items: center; gap: 15px; }
-        .acoes button { 
-            background: #ffc107; border: none; width: 40px; height: 40px; 
-            font-size: 1.4rem; font-weight: bold; border-radius: 8px; cursor: pointer; 
-        }
+        .acoes button { background: #ffc107; border: none; width: 40px; height: 40px; font-size: 1.4rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
         .quantidade { font-size: 1.4rem; font-weight: bold; min-width: 25px; text-align: center; }
 
-        .rodape-fixo { 
-            position: fixed; bottom: 0; left: 0; width: 100%; background: #111; 
-            padding: 20px; border-top: 2px solid #ffc107; display: flex; 
-            justify-content: space-between; align-items: center; z-index: 100;
-        }
-        #total { font-size: 1.3rem; font-weight: bold; color: #ffc107; }
-        #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        /* LISTA DE CONSUMO ATIVO */
+        .card-consumo { background: #111; border: 1px solid #ffc107; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 6px solid #ffc107; }
+        .cliente-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 8px; margin-bottom: 10px; }
+        .lista-itens { color: #eee; font-size: 0.95rem; line-height: 1.4; white-space: pre-wrap; margin-bottom: 15px; background: #1a1a1a; padding: 10px; border-radius: 5px; }
+        .total-consumo { color: #4caf50; font-weight: bold; font-size: 1.2rem; text-align: right; }
 
-        #btn-vendas { background: #222; color: #666; border: 1px solid #333; padding: 12px; width: 100%; margin-top: 50px; border-radius: 8px; cursor: pointer; }
-        #secao-vendas { display: none; margin-top: 20px; background: #111; padding: 15px; border-radius: 10px; border: 1px solid #444; margin-bottom: 50px;}
-        .venda-card { background: #1a1a1a; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 4px solid #4caf50; font-size: 0.85rem; }
-        .btn-limpar { background: #b02a37; color: #fff; border: none; padding: 12px; width: 100%; margin-top: 15px; border-radius: 5px; font-weight: bold; }
+        .btn-acao { border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-edit { background: #2196f3; color: white; width: 48%; }
+        .btn-pix { background: #00bfa5; color: white; width: 48%; }
+        .btn-fechar { background: #b02a37; color: white; width: 100%; }
+
+        .rodape-fixo { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 20px; border-top: 2px solid #ffc107; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+        #total { font-size: 1.3rem; font-weight: bold; color: #ffc107; }
+        #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
+
+        /* Modal PIX */
+        #modal-pix { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; color: #000; padding: 20px; border-radius: 15px; text-align: center; width: 90%; z-index: 1001; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; }
     </style>
 </head>
 <body>
@@ -65,7 +58,8 @@
 <header><h1>Cardápio Garçom</h1></header>
 
 <div class="secao-identificacao">
-    <input type="text" id="nome-cliente" placeholder="NOME DO CLIENTE (Obrigatório)">
+    <input type="hidden" id="pedido-id-edicao">
+    <input type="text" id="nome-cliente" placeholder="NOME DO CLIENTE OU MESA (Obrigatório)">
 </div>
 
 <main class="cardapio">
@@ -108,24 +102,31 @@
     <div class="item"><div class="info"><h3>Skol</h3></div><div class="rodape-item"><div class="preco">R$ 6,00</div><div class="acoes"><button onclick="removerItem('Skol', 6)">-</button><span id="qtd-Skol" class="quantidade">0</span><button onclick="addItem('Skol', 6)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>Heineken</h3></div><div class="rodape-item"><div class="preco">R$ 9,00</div><div class="acoes"><button onclick="removerItem('Heineken', 9)">-</button><span id="qtd-Heineken" class="quantidade">0</span><button onclick="addItem('Heineken', 9)">+</button></div></div></div>
 
-    <button id="btn-vendas" onclick="toggleVendas()">📊 Administração / Relatório</button>
-    <div id="secao-vendas">
-        <h3 style="color: #ffc107; margin-bottom: 10px;">Caixa do Dia</h3>
-        <p id="resumo-total" style="font-size: 1.5rem; color: #4caf50; font-weight: bold;">R$ 0,00</p>
-        <p id="resumo-qtd" style="color: #aaa; margin-bottom: 15px;">0 pedidos realizados</p>
-        <div id="lista-historico"></div>
-        <button class="btn-limpar" onclick="limparHistorico()">🗑️ ZERAR TUDO</button>
+    <hr style="border: 1px dashed #ffc107; margin: 40px 0;">
+
+    <div class="consumo-container">
+        <h2>📑 Consumo por Cliente</h2>
+        <div id="lista-consumo"></div>
     </div>
 </main>
 
+<div id="overlay-pix" class="overlay" onclick="fecharPix()"></div>
+<div id="modal-pix">
+    <h3>Pagamento PIX</h3>
+    <p style="font-size: 0.8rem;">Chave CPF: 410.160.938-10</p>
+    <div id="qrcode-area"></div>
+    <p id="valor-pix" style="font-weight:bold; color:#4caf50; font-size:1.2rem; margin:10px 0;"></p>
+    <button onclick="fecharPix()" style="background:#ffc107; border:none; padding:10px 25px; border-radius:5px; font-weight:bold;">FECHAR</button>
+</div>
+
 <footer class="rodape-fixo">
     <div id="total">Total: R$ 0,00</div>
-    <button id="enviar" onclick="finalizarPedido()">FINALIZAR</button>
+    <button id="enviar" onclick="finalizarPedido()">LANÇAR PEDIDO</button>
 </footer>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0dHn3SXaO1Vc5cnovA7rddJN0WNrpi4k",
@@ -142,13 +143,13 @@
     let carrinho = {};
     let totalGeral = 0;
 
-    window.addItem = function(nome, preco) {
+    window.addItem = (nome, preco) => {
         if (!carrinho[nome]) carrinho[nome] = { qtd: 0, preco: preco };
         carrinho[nome].qtd++;
         atualizarUI();
     };
 
-    window.removerItem = function(nome, preco) {
+    window.removerItem = (nome, preco) => {
         if (carrinho[nome] && carrinho[nome].qtd > 0) {
             carrinho[nome].qtd--;
             if (carrinho[nome].qtd === 0) delete carrinho[nome];
@@ -167,62 +168,77 @@
     }
 
     window.finalizarPedido = function() {
+        const idEdicao = document.getElementById('pedido-id-edicao').value;
         const cliente = document.getElementById('nome-cliente').value;
-        if (!cliente) return alert("Digite o nome do cliente!");
-        if (Object.keys(carrinho).length === 0) return alert("Carrinho vazio!");
+        if (!cliente || totalGeral === 0) return alert("Digite o nome e adicione itens!");
 
         let itensTexto = "";
-        for (let idItem in carrinho) {
-            const nomeExibicao = idItem.replace(/-/g, ' ');
-            const campoObs = document.getElementById(`obs-${idItem}`);
-            const obsValue = campoObs ? campoObs.value : "";
-            itensTexto += `${carrinho[idItem].qtd}x ${nomeExibicao}\n`;
-            if(obsValue) itensTexto += `   *(${obsValue})*\n`;
+        for (let id in carrinho) {
+            const obs = document.getElementById(`obs-${id}`)?.value || "";
+            itensTexto += `${carrinho[id].qtd}x ${id.replace(/-/g, ' ')}${obs ? ' ('+obs+')' : ''}\n`;
         }
 
-        const dados = {
-            cliente: cliente,
-            itens: itensTexto,
-            total: totalGeral.toFixed(2),
-            data: new Date().toLocaleString('pt-BR')
-        };
+        const dados = { cliente, itens: itensTexto, total: totalGeral.toFixed(2), data: new Date().toLocaleString() };
 
-        push(ref(db, 'pedidos'), dados);
-        push(ref(db, 'historico_vendas'), dados).then(() => {
-            alert("Pedido Enviado!");
-            location.reload();
-        });
-    };
-
-    window.toggleVendas = function() {
-        const div = document.getElementById('secao-vendas');
-        div.style.display = div.style.display === 'block' ? 'none' : 'block';
-    };
-
-    window.limparHistorico = function() {
-        if (confirm("Zerar relatório?")) {
-            const senha = prompt("Senha:");
-            if (senha === "1234") {
-                remove(ref(db, 'historico_vendas')).then(() => alert("Zerado!"));
-            }
+        if (idEdicao) {
+            update(ref(db, `pedidos/${idEdicao}`), dados).then(() => {
+                location.reload();
+            });
+        } else {
+            push(ref(db, 'pedidos'), dados).then(() => {
+                location.reload();
+            });
         }
     };
 
-    onValue(ref(db, 'historico_vendas'), (snapshot) => {
-        const vendas = snapshot.val();
-        let totalAcumulado = 0;
-        let qtd = 0;
-        let html = "";
-        for (let id in vendas) {
-            const v = vendas[id];
-            totalAcumulado += parseFloat(v.total);
-            qtd++;
-            html = `<div class="venda-card"><span class="venda-data">${v.data}</span><br><strong>${v.cliente}</strong>: <span class="venda-valor">R$ ${v.total}</span></div>` + html;
+    // MOSTRAR CONSUMO EM TEMPO REAL
+    onValue(ref(db, 'pedidos'), (snapshot) => {
+        const pedidos = snapshot.val();
+        const container = document.getElementById('lista-consumo');
+        container.innerHTML = "";
+        for (let id in pedidos) {
+            const p = pedidos[id];
+            container.innerHTML += `
+                <div class="card-consumo">
+                    <div class="cliente-header">
+                        <strong>👤 ${p.cliente}</strong>
+                        <span style="font-size:0.8rem; color:#aaa;">${p.data.split(',')[1]}</span>
+                    </div>
+                    <div class="lista-itens">${p.itens}</div>
+                    <div class="total-consumo">Total: R$ ${p.total}</div>
+                    <div style="display:flex; justify-content:space-between; gap:10px;">
+                        <button class="btn-acao btn-edit" onclick="retomarPedido('${id}', '${p.cliente}')">EDITAR ✏️</button>
+                        <button class="btn-acao btn-pix" onclick="gerarPix('${p.total}')">PIX 💸</button>
+                    </div>
+                    <button class="btn-acao btn-fechar" onclick="fecharConta('${id}')">FECHAR CONTA / REMOVER ✅</button>
+                </div>`;
         }
-        document.getElementById('resumo-total').innerText = `R$ ${totalAcumulado.toFixed(2)}`;
-        document.getElementById('resumo-qtd').innerText = `${qtd} pedidos realizados`;
-        document.getElementById('lista-historico').innerHTML = html;
     });
+
+    window.retomarPedido = (id, cliente) => {
+        document.getElementById('pedido-id-edicao').value = id;
+        document.getElementById('nome-cliente').value = cliente;
+        document.getElementById('enviar').innerText = "ATUALIZAR CONSUMO";
+        window.scrollTo(0,0);
+        alert("Consumo carregado! Ajuste os itens acima e clique em ATUALIZAR.");
+    };
+
+    window.fecharConta = (id) => { if(confirm("Deseja encerrar e remover o consumo deste cliente?")) remove(ref(db, `pedidos/${id}`)); };
+
+    window.gerarPix = (valor) => {
+        const chave = "41016093810";
+        const valorF = valor.replace(',', '.');
+        const url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CHAVE:${chave}-VALOR:${valorF}`;
+        document.getElementById('qrcode-area').innerHTML = `<img src="${url}">`;
+        document.getElementById('valor-pix').innerText = `R$ ${valor}`;
+        document.getElementById('modal-pix').style.display = 'block';
+        document.getElementById('overlay-pix').style.display = 'block';
+    };
+
+    window.fecharPix = () => {
+        document.getElementById('modal-pix').style.display = 'none';
+        document.getElementById('overlay-pix').style.display = 'none';
+    };
 </script>
 </body>
 </html>
