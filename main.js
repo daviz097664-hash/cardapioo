@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+// Sua configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA0dHn3SXaO1Vc5cnovA7rddJN0WNrpi4k",
   authDomain: "cardapio-restaurante-df665.firebaseapp.com",
@@ -17,6 +18,7 @@ const db = getDatabase(app);
 let carrinho = {};
 let totalGeral = 0;
 
+// Funções expostas para o HTML (window.)
 window.addItem = function(nome, preco) {
     if (!carrinho[nome]) carrinho[nome] = { qtd: 0, preco: preco };
     carrinho[nome].qtd++;
@@ -33,31 +35,49 @@ window.removerItem = function(nome, preco) {
 
 function atualizarTudo() {
     totalGeral = 0;
+    // Reseta todos os spans de quantidade para 0
     document.querySelectorAll('.quantidade').forEach(span => span.innerText = "0");
+    
+    // Atualiza apenas os que estão no carrinho
     for (let item in carrinho) {
         const span = document.getElementById(`qtd-${item}`);
-        if (span) span.innerText = carrinho[item].qtd;
-        totalGeral += carrinho[item].qtd * carrinho[item].preco;
+        if (span) {
+            span.innerText = carrinho[item].qtd;
+            totalGeral += carrinho[item].qtd * carrinho[item].preco;
+        }
     }
     document.getElementById('total').innerText = `Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
 }
 
 window.finalizarPedido = function() {
     const nome = document.getElementById('nome-cliente').value;
-    if (!nome || nome.trim() === "") { alert("⚠️ Digite o nome do cliente!"); return; }
-    if (totalGeral === 0) { alert("🛒 Adicione itens ao pedido!"); return; }
+    
+    if (!nome || nome.trim() === "") {
+        alert("⚠️ Por favor, digite o nome do cliente!");
+        return;
+    }
+    if (totalGeral === 0) {
+        alert("🛒 O carrinho está vazio!");
+        return;
+    }
 
-    const itensTexto = Object.keys(carrinho).map(n => `${carrinho[n].qtd}x ${n}`).join(", ");
+    const itensResumo = Object.keys(carrinho)
+        .map(n => `${carrinho[n].qtd}x ${n}`)
+        .join(", ");
 
+    // Envia para o Realtime Database
     push(ref(db, 'pedidos'), {
         cliente: nome,
-        itens: itensTexto,
+        itens: itensResumo,
         total: totalGeral.toFixed(2).replace('.', ','),
-        data: serverTimestamp()
+        timestamp: serverTimestamp()
     }).then(() => {
-        alert("✅ Enviado para a cozinha!");
+        alert("✅ Pedido enviado para a cozinha!");
+        // Limpa o formulário
         carrinho = {};
         document.getElementById('nome-cliente').value = "";
         atualizarTudo();
+    }).catch((error) => {
+        alert("❌ Erro ao enviar: " + error.message);
     });
 }
