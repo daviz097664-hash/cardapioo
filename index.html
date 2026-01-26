@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
   <header>
@@ -14,19 +13,19 @@
   </header>
 
   <main class="cardapio">
-
     <h2>🍔 Hambúrgueres</h2>
-
+    
     <div class="item">
       <div class="info">
         <h3>X-Burger</h3>
         <p>Pão, hambúrguer, queijo</p>
       </div>
       <div class="acoes">
-        <button onclick="removerItem('X-Burger')">−</button>
-        <span class="preco">R$ 25,00</span>
+        <button onclick="removerItem('X-Burger', 25)">−</button>
+        <span id="qtd-X-Burger" class="quantidade">0</span>
         <button onclick="addItem('X-Burger', 25)">+</button>
       </div>
+      <div class="preco">R$ 25,00</div>
     </div>
 
     <div class="item">
@@ -35,50 +34,41 @@
         <p>Pão, hambúrguer, queijo, alface, tomate</p>
       </div>
       <div class="acoes">
-        <button onclick="removerItem('X-Salada')">−</button>
-        <span class="preco">R$ 28,00</span>
+        <button onclick="removerItem('X-Salada', 28)">−</button>
+        <span id="qtd-X-Salada" class="quantidade">0</span>
         <button onclick="addItem('X-Salada', 28)">+</button>
       </div>
+      <div class="preco">R$ 28,00</div>
     </div>
 
     <h2>🥤 Bebidas</h2>
-
+    
     <div class="item">
       <div class="info">
         <h3>Refrigerante</h3>
         <p>Lata 350ml</p>
       </div>
       <div class="acoes">
-        <button onclick="removerItem('Refrigerante')">−</button>
-        <span class="preco">R$ 8,00</span>
+        <button onclick="removerItem('Refrigerante', 8)">−</button>
+        <span id="qtd-Refrigerante" class="quantidade">0</span>
         <button onclick="addItem('Refrigerante', 8)">+</button>
       </div>
+      <div class="preco">R$ 8,00</div>
     </div>
 
     <h2>💧 Águas</h2>
-
+    
     <div class="item">
       <div class="info">
         <h3>Água</h3>
         <p>Sem gás</p>
       </div>
       <div class="acoes">
-        <button onclick="removerItem('Água')">−</button>
-        <span class="preco">R$ 10,00</span>
+        <button onclick="removerItem('Água', 10)">−</button>
+        <span id="qtd-Água" class="quantidade">0</span>
         <button onclick="addItem('Água', 10)">+</button>
       </div>
-    </div>
-
-    <div class="item">
-      <div class="info">
-        <h3>Água com gás</h3>
-        <p>Garrafa</p>
-      </div>
-      <div class="acoes">
-        <button onclick="removerItem('Água com gás')">−</button>
-        <span class="preco">R$ 12,00</span>
-        <button onclick="addItem('Água com gás', 12)">+</button>
-      </div>
+      <div class="preco">R$ 10,00</div>
     </div>
 
   </main>
@@ -88,6 +78,6 @@
     <button id="enviar">Enviar Pedido</button>
   </footer>
 
-  <script type="module" src="./main.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
