@@ -30,23 +30,19 @@ function finalizarPedido() {
         return;
     }
 
-    // Mostra o total antes de zerar
-    alert("Pedido Finalizado! Total: R$ " + valorTotal.toFixed(2).replace('.', ','));
+    // 1. Alerta de sucesso
+    alert("Pedido Finalizado!\nTotal: R$ " + valorTotal.toFixed(2).replace('.', ','));
 
-    // --- LÓGICA PARA LIMPAR TUDO ---
-    
-    // 1. Zera os números (0) de todos os itens na tela
-    const spansQuantidade = document.querySelectorAll('.quantidade');
-    spansQuantidade.forEach(span => {
-        span.innerText = "0";
-    });
+    // 2. Limpa visualmente os números (voltam a ser 0)
+    const spans = document.querySelectorAll('.quantidade');
+    spans.forEach(s => s.innerText = "0");
 
-    // 2. Limpa o objeto do carrinho na memória
-    for (let item in carrinho) {
-        carrinho[item] = 0;
+    // 3. Limpa a memória
+    for (let key in carrinho) {
+        carrinho[key] = 0;
     }
-
-    // 3. Zera o valor total e atualiza o rodapé
     valorTotal = 0;
+
+    // 4. Atualiza o rodapé
     document.getElementById('total').innerText = "Total: R$ 0,00";
 }
