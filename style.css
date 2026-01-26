@@ -3,7 +3,7 @@ body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: #111;
   color: #fff;
-  padding-bottom: 150px;
+  padding-bottom: 160px; /* Espaço para o rodapé não cobrir as águas */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,11 +50,11 @@ h2 {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 0 15px;
+  margin: 0 10px;
 }
 
 .acoes button {
-  background: #ffcc00; /* Cor amarela dos botões */
+  background: #ffcc00;
   color: #000;
   border: none;
   border-radius: 6px;
@@ -75,7 +75,6 @@ h2 {
 
 .preco {
   font-weight: bold;
-  color: #fff;
   white-space: nowrap;
   min-width: 75px;
   text-align: right;
@@ -90,6 +89,7 @@ footer {
   padding: 20px;
   box-sizing: border-box;
   border-top: 1px solid #333;
+  z-index: 999;
 }
 
 #total {
@@ -107,5 +107,4 @@ footer {
   border-radius: 8px;
   font-size: 18px;
   font-weight: bold;
-  cursor: pointer;
 }
