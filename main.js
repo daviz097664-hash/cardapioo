@@ -19,21 +19,19 @@ function removerItem(nome, preco) {
 }
 
 function atualizarInterface(nome) {
-    // Atualiza o número no span entre os botões
     const spanQtd = document.getElementById(`qtd-${nome}`);
     if (spanQtd) {
         spanQtd.innerText = carrinho[nome];
     }
     
-    // Atualiza o total no rodapé
     const totalElemento = document.getElementById('total');
     totalElemento.innerText = `Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
 }
 
 document.getElementById('enviar').onclick = function() {
     if (totalGeral === 0) {
-        alert("Adicione pelo menos um item!");
+        alert("Adicione itens ao pedido!");
     } else {
-        alert("Pedido processado! Total: R$ " + totalGeral.toFixed(2).replace('.', ','));
+        alert("Pedido Enviado! Total: R$ " + totalGeral.toFixed(2).replace('.', ','));
     }
 };
