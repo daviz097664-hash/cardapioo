@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garçom - Cardápio Oficial</title>
-    <link rel="icon" type="image/jpeg" href="IMG_4557.jpeg">
+    <title>Garçom - Cardápio Completo</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #000; color: #fff; font-family: sans-serif; padding: 20px; padding-bottom: 120px; }
+        body { background-color: #000; color: #fff; font-family: sans-serif; padding: 20px; padding-bottom: 150px; }
         header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #ffc107; padding-bottom: 10px; }
         header h1 { color: #ffc107; font-size: 1.5rem; text-transform: uppercase; }
         .secao-identificacao input { width: 100%; padding: 15px; background: #222; border: 1px solid #ffc107; color: #fff; border-radius: 8px; margin-bottom: 20px; font-size: 1rem; }
@@ -31,6 +30,9 @@
         .rodape-fixo { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 20px; border-top: 2px solid #ffc107; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         #total { font-size: 1.3rem; font-weight: bold; color: #ffc107; }
         #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
+        .painel-caixa { background: #1a1a1a; border: 2px solid #4caf50; padding: 20px; border-radius: 15px; margin-top: 50px; text-align: center; }
+        .venda-valor { font-size: 2.2rem; color: #4caf50; font-weight: bold; margin: 10px 0; }
+        .btn-zerar { background: #444; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -42,7 +44,7 @@
 </div>
 
 <main class="cardapio">
-    <h2>🍔 Hambúrguer (Pão de Hambúrguer)</h2>
+    <h2>🍔 Hambúrgueres (Pão de Hambúrguer)</h2>
     <div class="item"><div class="info"><h3>X-burguer</h3><p>Hambúrguer, presunto, mussarela, ketchup e maionese</p><input type="text" id="obs-X-burguer" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 16,00</div><div class="acoes"><button onclick="removerItem('X-burguer')">-</button><span id="qtd-X-burguer" class="quantidade">0</span><button onclick="addItem('X-burguer', 16)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>X-Salada</h3><p>Hambúrguer, presunto, mussarela, salada e maionese</p><input type="text" id="obs-X-Salada" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 18,00</div><div class="acoes"><button onclick="removerItem('X-Salada')">-</button><span id="qtd-X-Salada" class="quantidade">0</span><button onclick="addItem('X-Salada', 18)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>X-EGG</h3><p>Hambúrguer, ovo, presunto, mussarela e salada</p><input type="text" id="obs-X-EGG" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('X-EGG')">-</button><span id="qtd-X-EGG" class="quantidade">0</span><button onclick="addItem('X-EGG', 20)">+</button></div></div></div>
@@ -55,14 +57,14 @@
     <div class="item"><div class="info"><h3>X-Calabresa</h3><p>Calabresa acebolada e mussarela</p><input type="text" id="obs-X-Calabresa" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 15,00</div><div class="acoes"><button onclick="removerItem('X-Calabresa')">-</button><span id="qtd-X-Calabresa" class="quantidade">0</span><button onclick="addItem('X-Calabresa', 15)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>Contra-filé</h3><p>Contra-filé e mussarela</p><input type="text" id="obs-Contra-file" class="input-obs" placeholder="Obs..."></div><div class="rodape-item"><div class="preco">R$ 20,00</div><div class="acoes"><button onclick="removerItem('Contra-file')">-</button><span id="qtd-Contra-file" class="quantidade">0</span><button onclick="addItem('Contra-file', 20)">+</button></div></div></div>
 
-    <h2>🥤 Refrigerantes</h2>
+    <h2>🥤 Refrigerantes e Sucos</h2>
     <div class="item"><div class="info"><h3>Coca Lata</h3></div><div class="rodape-item"><div class="preco">R$ 7,00</div><div class="acoes"><button onclick="removerItem('Coca-Lata')">-</button><span id="qtd-Coca-Lata" class="quantidade">0</span><button onclick="addItem('Coca-Lata', 7)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>Coca 600ml</h3></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Coca-600')">-</button><span id="qtd-Coca-600" class="quantidade">0</span><button onclick="addItem('Coca-600', 10)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>Coca 1 Litro</h3></div><div class="rodape-item"><div class="preco">R$ 12,00</div><div class="acoes"><button onclick="removerItem('Coca-1L')">-</button><span id="qtd-Coca-1L" class="quantidade">0</span><button onclick="addItem('Coca-1L', 12)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>Guaraná / Fanta Lata</h3></div><div class="rodape-item"><div class="preco">R$ 7,00</div><div class="acoes"><button onclick="removerItem('Guarana-Fanta')">-</button><span id="qtd-Guarana-Fanta" class="quantidade">0</span><button onclick="addItem('Guarana-Fanta', 7)">+</button></div></div></div>
-
-    <h2>🍹 Sucos e Águas</h2>
     <div class="item"><div class="info"><h3>Suco 500ml</h3><input type="text" id="obs-Suco" class="input-obs" placeholder="Sabor..."></div><div class="rodape-item"><div class="preco">R$ 10,00</div><div class="acoes"><button onclick="removerItem('Suco')">-</button><span id="qtd-Suco" class="quantidade">0</span><button onclick="addItem('Suco', 10)">+</button></div></div></div>
+
+    <h2>💧 Águas</h2>
     <div class="item"><div class="info"><h3>Água sem Gás</h3></div><div class="rodape-item"><div class="preco">R$ 3,00</div><div class="acoes"><button onclick="removerItem('Agua-sem')">-</button><span id="qtd-Agua-sem" class="quantidade">0</span><button onclick="addItem('Agua-sem', 3)">+</button></div></div></div>
     <div class="item"><div class="info"><h3>Água com Gás</h3></div><div class="rodape-item"><div class="preco">R$ 4,00</div><div class="acoes"><button onclick="removerItem('Agua-com')">-</button><span id="qtd-Agua-com" class="quantidade">0</span><button onclick="addItem('Agua-com', 4)">+</button></div></div></div>
 
@@ -76,15 +78,24 @@
     <div class="item"><div class="info"><h3>Ovo Extra</h3></div><div class="rodape-item"><div class="preco">R$ 3,00</div><div class="acoes"><button onclick="removerItem('Ovo-Extra')">-</button><span id="qtd-Ovo-Extra" class="quantidade">0</span><button onclick="addItem('Ovo-Extra', 3)">+</button></div></div></div>
 
     <hr style="border: 1px dashed #ffc107; margin: 40px 0;">
-    <h2>📑 PEDIDOS ATIVOS (CONSUMO NA MESA)</h2>
+    <h2>📑 PEDIDOS ATIVOS</h2>
     <div id="lista-consumo"></div>
+
+    <div class="painel-caixa">
+        <h3>💰 TOTAL VENDIDO NO DIA</h3>
+        <div class="venda-valor" id="faturamento-dia">R$ 0,00</div>
+        <button class="btn-zerar" onclick="window.zerarCaixa()">REINICIAR CAIXA DO DIA</button>
+    </div>
 </main>
 
-<footer class="rodape-fixo"><div id="total">Total: R$ 0,00</div><button id="enviar" onclick="finalizarPedido()">LANÇAR PEDIDO</button></footer>
+<footer class="rodape-fixo">
+    <div id="total">Total: R$ 0,00</div>
+    <button id="enviar" onclick="finalizarPedido()">LANÇAR PEDIDO</button>
+</footer>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, update, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0dHn3SXaO1Vc5cnovA7rddJN0WNrpi4k",
@@ -101,8 +112,19 @@
     let carrinho = {};
     let totalGeral = 0;
 
-    window.addItem = (n, p) => { if(!carrinho[n]) carrinho[n]={qtd:0, preco:p}; carrinho[n].qtd++; atualizarUI(); };
-    window.removerItem = (n) => { if(carrinho[n] && carrinho[n].qtd > 0){ carrinho[n].qtd--; if(carrinho[n].qtd===0) delete carrinho[n]; } atualizarUI(); };
+    window.addItem = (n, p) => { 
+        if(!carrinho[n]) carrinho[n] = {qtd:0, preco:p}; 
+        carrinho[n].qtd++; 
+        atualizarUI(); 
+    };
+
+    window.removerItem = (n) => { 
+        if(carrinho[n] && carrinho[n].qtd > 0){ 
+            carrinho[n].qtd--; 
+            if(carrinho[n].qtd === 0) delete carrinho[n]; 
+        } 
+        atualizarUI(); 
+    };
 
     function atualizarUI() {
         totalGeral = 0;
@@ -110,14 +132,14 @@
             const id = span.id.replace('qtd-', '');
             span.innerText = carrinho[id] ? carrinho[id].qtd : 0;
         });
-        for(let i in carrinho) totalGeral += (carrinho[i].qtd * carrinho[i].preco);
+        for(let id in carrinho) totalGeral += (carrinho[id].qtd * carrinho[id].preco);
         document.getElementById('total').innerText = `Total: R$ ${totalGeral.toFixed(2)}`;
     }
 
     window.finalizarPedido = function() {
         const idEd = document.getElementById('pedido-id-edicao').value;
         const cli = document.getElementById('nome-cliente').value;
-        if(!cli || totalGeral === 0) return alert("Preencha o nome e selecione itens!");
+        if(!cli || totalGeral === 0) return alert("Por favor, preencha o nome e selecione os itens!");
 
         let txt = "";
         for(let id in carrinho) {
@@ -143,35 +165,50 @@
         Object.keys(pedidos).forEach(id => {
             const p = pedidos[id];
             const cor = p.status === "pronto" ? "#4caf50" : "#ffc107";
-            const statusTxt = p.status === "pronto" ? "PEDIDO PRONTO ✅" : "EM PREPARO ⏳";
+            const statusTxt = p.status === "pronto" ? "PRONTO ✅" : "NA COZINHA ⏳";
 
             const card = document.createElement('div');
             card.className = "card-consumo";
             card.style.borderLeftColor = cor;
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <strong>👤 Mesa/Cliente: ${p.cliente}</strong>
+                    <strong>👤 Mesa: ${p.cliente}</strong>
                     <span class="status-tag" style="background:${cor}; color:#000">${statusTxt}</span>
                 </div>
                 <div class="lista-itens">${p.itens}</div>
                 <div class="total-consumo">Total: R$ ${p.total}</div>
-                <button class="btn-edit btn-acao" onclick="window.retomar('${id}', '${p.cliente}', ${JSON.stringify(p.rawCarrinho).replace(/"/g, '&quot;')})">EDITAR / ADICIONAR ITENS ✏️</button>
-                <button class="btn-fechar btn-acao" onclick="window.fechar('${id}')">FECHAR CONTA (LIMPAR) 🏁</button>
+                <button class="btn-edit btn-acao" onclick="window.retomar('${id}', '${p.cliente}', ${JSON.stringify(p.rawCarrinho).replace(/"/g, '&quot;')})">EDITAR PEDIDO ✏️</button>
+                <button class="btn-fechar btn-acao" onclick="window.receberERegistrar('${id}', ${p.total})">FECHAR CONTA E RECEBER 🏁</button>
             `;
             container.appendChild(card);
         });
     });
 
+    onValue(ref(db, 'historico_vendas/faturamento_total'), (snapshot) => {
+        const total = snapshot.val() || 0;
+        document.getElementById('faturamento-dia').innerText = `R$ ${parseFloat(total).toFixed(2)}`;
+    });
+
+    window.receberERegistrar = (id, valor) => {
+        if(confirm(`Confirmar recebimento de R$ ${valor}? O valor será somado ao caixa.`)) {
+            onValue(ref(db, 'historico_vendas/faturamento_total'), (snap) => {
+                const atual = snap.val() || 0;
+                set(ref(db, 'historico_vendas/faturamento_total'), parseFloat(atual) + parseFloat(valor));
+            }, { onlyOnce: true });
+            remove(ref(db, `pedidos/${id}`));
+        }
+    };
+
+    window.zerarCaixa = () => { if(confirm("Deseja realmente ZERAR o faturamento do dia?")) set(ref(db, 'historico_vendas/faturamento_total'), 0); };
+    
     window.retomar = (id, cli, car) => {
         document.getElementById('pedido-id-edicao').value = id;
         document.getElementById('nome-cliente').value = cli;
         carrinho = car;
         atualizarUI();
-        document.getElementById('enviar').innerText = "ATUALIZAR CONTA";
         window.scrollTo(0,0);
+        document.getElementById('enviar').innerText = "ATUALIZAR PEDIDO";
     };
-
-    window.fechar = (id) => { if(confirm("Deseja encerrar esta conta? O pedido será removido.")) remove(ref(db, `pedidos/${id}`)); };
 </script>
 </body>
 </html>
