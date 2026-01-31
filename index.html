@@ -21,7 +21,6 @@
         .acoes button { background: #ffc107; border: none; width: 40px; height: 40px; font-size: 1.4rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
         .quantidade { font-size: 1.4rem; font-weight: bold; min-width: 25px; text-align: center; }
         
-        /* ESTILO DO CARD DE CONSUMO COM BORDA DINÂMICA */
         .card-consumo { background: #111; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 8px solid #ffc107; transition: 0.3s; }
         .card-consumo.pronto { border-left-color: #4caf50 !important; border-color: #4caf50; }
         
@@ -102,7 +101,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove, update, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, update, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyA0dHn3SXaO1Vc5cnovA7rddJN0WNrpi4k",
@@ -121,7 +120,7 @@
     let itensConsumidos = {}; 
 
     window.addItem = (n, p) => { 
-        if(!carrinhoAtual[n]) carrinhoAtual[n] = {qtd:0, preco:p, status: "pendente"}; 
+        if(!carrinhoAtual[n]) carrinhoAtual[n] = {qtd:0, preco:p}; 
         carrinhoAtual[n].qtd++; 
         atualizarUI(); 
     };
@@ -158,8 +157,7 @@
                 nome: id.replace(/-/g, ' '),
                 qtd: carrinhoAtual[id].qtd,
                 preco: carrinhoAtual[id].preco,
-                obs: obs,
-                status: "pendente"
+                obs: obs
             };
         }
 
@@ -176,7 +174,7 @@
             itens: textoTotal, 
             itensDeta: dadosDetaFinal, 
             total: valorFinal.toFixed(2), 
-            status: "em_preparo" // Volta para "em_preparo" sempre que adicionar algo novo
+            status: "em_preparo" 
         };
 
         if(idEd) {
@@ -196,7 +194,6 @@
             const p = pedidos[id];
             const estaPronto = p.status === "pronto";
             const card = document.createElement('div');
-            // ADICIONA A CLASSE "PRONTO" PARA FICAR VERDE
             card.className = `card-consumo ${estaPronto ? 'pronto' : ''}`;
             
             card.innerHTML = `
@@ -214,27 +211,51 @@
         document.getElementById('faturamento-dia').innerText = `R$ ${parseFloat(snap.val() || 0).toFixed(2)}`;
     });
 
-    window.receberERegistrar = (id, valor) => {
-        if(confirm(`Confirmar pagamento de R$ ${valor}?`)) {
-            onValue(ref(db, 'historico_vendas/faturamento_total'), (snap) => {
-                const novoTotal = parseFloat(snap.val() || 0) + parseFloat(valor);
-                set(ref(db, 'historico_vendas/faturamento_total'), novoTotal);
-            }, { onlyOnce: true });
-            remove(ref(db, `pedidos/${id}`));
+    window.receberERegistrar = async (id, valor) => {
+        // Sequência solicitada: Débito, Crédito, Pix, Dinheiro, VR
+        const mensagem = `FECHANDO CONTA: R$ ${valor.toFixed(2)}\n\nEscolha a forma de pagamento:\n1. Débito\n2. Crédito\n3. Pix\n4. Dinheiro\n5. VR`;
+        const opcao = prompt(mensagem);
+
+        const formas = {
+            "1": "debito",
+            "2": "credito",
+            "3": "pix",
+            "4": "dinheiro",
+            "5": "vr"
+        };
+
+        if (formas[opcao]) {
+            const formaEscolhida = formas[opcao];
+            
+            // Busca o total atual para somar
+            const faturamentoRef = ref(db, 'historico_vendas/faturamento_total');
+            const snapTotal = await get(faturamentoRef);
+            const novoTotalGeral = parseFloat(snapTotal.val() || 0) + parseFloat(valor);
+            
+            // Atualiza faturamento geral e remove pedido
+            await set(faturamentoRef, novoTotalGeral);
+            await remove(ref(db, `pedidos/${id}`));
+            
+            alert(`Pago com ${formaEscolhida.toUpperCase()}!`);
+        } else {
+            alert("Operação cancelada ou código inválido.");
         }
     };
 
-    window.zerarCaixa = () => { if(confirm("Zerar caixa do dia?")) set(ref(db, 'historico_vendas/faturamento_total'), 0); };
+    window.zerarCaixa = () => { 
+        if(confirm("Deseja zerar o faturamento de hoje?")) {
+            set(ref(db, 'historico_vendas/faturamento_total'), 0).then(() => {
+                alert("Caixa reiniciado!");
+                location.reload();
+            });
+        }
+    };
 
     window.retomar = (id, cli, itensAntigos) => {
         document.getElementById('pedido-id-edicao').value = id;
         document.getElementById('nome-cliente').value = cli;
         document.getElementById('aviso-edicao').style.display = "block";
-        itensConsumidos = {};
-        for(let k in itensAntigos) {
-            itensConsumidos[k] = itensAntigos[k];
-            itensConsumidos[k].status = "feito"; 
-        }
+        itensConsumidos = itensAntigos;
         carrinhoAtual = {}; 
         atualizarUI();
         window.scrollTo(0,0);
