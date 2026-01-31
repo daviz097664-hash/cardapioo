@@ -174,7 +174,15 @@
             valorFinal += (it.qtd * it.preco);
         }
 
-        const payload = { cliente: cli, itens: textoTotal, itensDeta: dadosDetaFinal, total: valorFinal.toFixed(2) };
+        const payload = { 
+            cliente: cli, 
+            itens: textoTotal, 
+            itensDeta: dadosDetaFinal, 
+            total: valorFinal.toFixed(2),
+            status: "em_preparo",
+            notificar: true // ISSO GERA O (NOVO PEDIDO) NO SITE B
+        };
+
         if(idEd) update(ref(db, `pedidos/${idEd}`), payload).then(() => location.reload());
         else push(ref(db, 'pedidos'), payload).then(() => location.reload());
     };
@@ -204,7 +212,6 @@
     });
 
     window.receberERegistrar = async (id, valor, cliente, itensTexto) => {
-        // Sequência: Débito, Crédito, Pix, Dinheiro, VR
         const msg = `CLIENTE: ${cliente}\nVALOR: R$ ${valor.toFixed(2)}\n\n1. Débito\n2. Crédito\n3. Pix\n4. Dinheiro\n5. VR`;
         const op = prompt(msg);
         const formas = {"1":"Débito","2":"Crédito","3":"Pix","4":"Dinheiro","5":"VR"};
@@ -212,15 +219,12 @@
         if (formas[op]) {
             const fRef = ref(db, 'historico_vendas/faturamento_total');
             const snap = await get(fRef);
-            
-            // Salva registro detalhado para o relatório
             await push(ref(db, 'historico_vendas/vendas_dia'), {
                 cliente: cliente,
                 valor: valor,
                 forma: formas[op],
                 resumo: itensTexto.substring(0, 35) + "..."
             });
-
             await set(fRef, parseFloat(snap.val() || 0) + parseFloat(valor));
             await remove(ref(db, `pedidos/${id}`));
             alert("Venda registrada!");
@@ -253,7 +257,7 @@
     };
 
     window.confirmarZerarTudo = () => {
-        if(confirm("ATENÇÃO: Isso apagará todas as vendas registradas e zerará o caixa. Deseja continuar?")) {
+        if(confirm("Deseja apagar o histórico e zerar o caixa?")) {
             set(ref(db, 'historico_vendas'), { faturamento_total: 0, vendas_dia: null }).then(() => location.reload());
         }
     };
