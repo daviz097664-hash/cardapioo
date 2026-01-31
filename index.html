@@ -157,17 +157,20 @@
     window.finalizarPedido = function() {
         const idEd = document.getElementById('pedido-id-edicao').value;
         const cli = document.getElementById('nome-cliente').value;
-        if(!cli) return alert("Informe o cliente!");
+        if(!cli) return alert("Informe o nome do cliente!");
 
-        let dadosDetaFinal = { ...itensConsumidos };
+        // 1. Pegamos o que já existia (se for edição)
+        let dadosDetaFinal = idEd ? { ...itensConsumidos } : {};
         
-        // Marca o que já existia como antigo (para não confundir a cozinha)
-        for(let k in dadosDetaFinal) { dadosDetaFinal[k].novo = false; }
+        // 2. Garantimos que o que já estava lá fique marcado como antigo (novo: false)
+        for(let k in dadosDetaFinal) { 
+            dadosDetaFinal[k].novo = false; 
+        }
 
-        // Adiciona o que é novo agora
+        // 3. Adicionamos o que está no carrinho agora como 'true' (para o site B não riscar)
         for(let id in carrinhoAtual) {
             const obs = document.getElementById(`obs-${id}`)?.value || "";
-            const chaveUnica = `${id}_${Date.now()}`;
+            const chaveUnica = `${id}_${Date.now()}`; 
             dadosDetaFinal[chaveUnica] = { 
                 nome: id.replace(/-/g, ' '), 
                 qtd: carrinhoAtual[id].qtd, 
@@ -177,6 +180,7 @@
             };
         }
 
+        // Gera o resumo de texto para o Site A e soma o total real
         let textoTotal = "";
         let valorFinal = 0;
         for(let k in dadosDetaFinal) {
@@ -187,14 +191,17 @@
 
         const payload = { 
             cliente: cli, 
-            itens: textoTotal, 
+            itens: textoTotal,
             itensDeta: dadosDetaFinal, 
             total: valorFinal.toFixed(2),
             notificar: true 
         };
 
-        if(idEd) update(ref(db, `pedidos/${idEd}`), payload).then(() => location.reload());
-        else push(ref(db, 'pedidos'), payload).then(() => location.reload());
+        if(idEd) {
+            update(ref(db, `pedidos/${idEd}`), payload).then(() => location.reload());
+        } else {
+            push(ref(db, 'pedidos'), payload).then(() => location.reload());
+        }
     };
 
     onValue(ref(db, 'pedidos'), (snapshot) => {
@@ -222,7 +229,7 @@
     });
 
     window.receberERegistrar = async (id, valor, cliente, itensTexto) => {
-        const msg = `PAGAMENTO: ${cliente}\nTOTAL: R$ ${valor}\n\n1. Débito\n2. Crédito\n3. Pix\n4. Dinheiro\n5. VR`;
+        const msg = `CLIENTE: ${cliente}\nTOTAL: R$ ${valor}\n\n1. Débito\n2. Crédito\n3. Pix\n4. Dinheiro\n5. VR`;
         const op = prompt(msg);
         const formas = {"1":"Débito","2":"Crédito","3":"Pix","4":"Dinheiro","5":"VR"};
         if (formas[op]) {
@@ -231,7 +238,7 @@
             await push(ref(db, 'historico_vendas/vendas_dia'), { cliente, valor, forma: formas[op], resumo: itensTexto.substring(0,30) });
             await set(fRef, parseFloat(snap.val() || 0) + parseFloat(valor));
             await remove(ref(db, `pedidos/${id}`));
-            alert("Pago com sucesso!");
+            alert("Venda registrada!");
         }
     };
 
@@ -240,29 +247,33 @@
         const vendas = snap.val() || {};
         let totalGeral = 0;
         let pgtos = { "Débito":0, "Crédito":0, "Pix":0, "Dinheiro":0, "VR":0 };
-        let lista = "";
+        let listaHtml = "";
         Object.values(vendas).forEach(v => {
             pgtos[v.forma] += parseFloat(v.valor);
             totalGeral += parseFloat(v.valor);
-            lista += `<p style="font-size:0.8rem">${v.cliente}: R$ ${v.valor} (${v.forma})</p>`;
+            listaHtml += `<p style='font-size:0.8rem'>${v.cliente}: R$ ${v.valor} (${v.forma})</p>`;
         });
-        let resumo = `<h3>TOTAL: R$ ${totalGeral.toFixed(2)}</h3><br>`;
-        for(let f in pgtos) { resumo += `<p>${f}: R$ ${pgtos[f].toFixed(2)}</p>`; }
-        document.getElementById('conteudo-relatorio').innerHTML = resumo + "<hr>" + lista;
+        let resumoHtml = `<h3>TOTAL GERAL: R$ ${totalGeral.toFixed(2)}</h3><br>`;
+        for(let f in pgtos) { resumoHtml += `<p>${f}: R$ ${pgtos[f].toFixed(2)}</p>`; }
+        document.getElementById('conteudo-relatorio').innerHTML = resumoHtml + "<hr>" + listaHtml;
         document.getElementById('modal-relatorio').style.display = 'block';
     };
 
     window.confirmarZerarTudo = () => {
-        if(confirm("Zerar o dia?")) set(ref(db, 'historico_vendas'), { faturamento_total: 0, vendas_dia: null }).then(() => location.reload());
+        if(confirm("Deseja zerar todo o histórico de hoje?")) {
+            set(ref(db, 'historico_vendas'), { faturamento_total: 0, vendas_dia: null }).then(() => location.reload());
+        }
     };
 
     window.retomar = (id, cli, itensAntigos) => {
         document.getElementById('pedido-id-edicao').value = id;
         document.getElementById('nome-cliente').value = cli;
         document.getElementById('aviso-edicao').style.display = "block";
-        itensConsumidos = itensAntigos; carrinhoAtual = {}; atualizarUI();
+        itensConsumidos = itensAntigos; 
+        carrinhoAtual = {}; 
+        atualizarUI();
         window.scrollTo(0,0);
-        document.getElementById('enviar').innerText = "ATUALIZAR PEDIDO";
+        document.getElementById('enviar').innerText = "ATUALIZAR CONSUMO";
     };
 </script>
 </body>
