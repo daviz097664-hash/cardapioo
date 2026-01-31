@@ -21,7 +21,11 @@
         .acoes button { background: #ffc107; border: none; width: 40px; height: 40px; font-size: 1.4rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
         .quantidade { font-size: 1.4rem; font-weight: bold; min-width: 25px; text-align: center; }
         
-        .card-consumo { background: #111; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 8px solid #ffc107; }
+        /* ALTERADO: Lógica de Cores do Semáforo */
+        .card-consumo { background: #111; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; transition: 0.3s; }
+        .status-pendente { border-left: 10px solid #ffc107; background: #1a1600; } /* AMARELO */
+        .status-pronto { border-left: 10px solid #28a745; background: #051405; } /* VERDE */
+
         .lista-itens { color: #eee; font-size: 0.95rem; line-height: 1.4; white-space: pre-wrap; margin-bottom: 15px; background: #1a1a1a; padding: 10px; border-radius: 5px; }
         .total-consumo { color: #4caf50; font-weight: bold; font-size: 1.2rem; text-align: right; margin-bottom: 10px; }
         .btn-acao { border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%; }
@@ -159,15 +163,11 @@
         const cli = document.getElementById('nome-cliente').value;
         if(!cli) return alert("Informe o nome do cliente!");
 
-        // 1. Pegamos o que já existia (se for edição)
         let dadosDetaFinal = idEd ? { ...itensConsumidos } : {};
-        
-        // 2. Garantimos que o que já estava lá fique marcado como antigo (novo: false)
         for(let k in dadosDetaFinal) { 
             dadosDetaFinal[k].novo = false; 
         }
 
-        // 3. Adicionamos o que está no carrinho agora como 'true' (para o site B não riscar)
         for(let id in carrinhoAtual) {
             const obs = document.getElementById(`obs-${id}`)?.value || "";
             const chaveUnica = `${id}_${Date.now()}`; 
@@ -180,7 +180,6 @@
             };
         }
 
-        // Gera o resumo de texto para o Site A e soma o total real
         let textoTotal = "";
         let valorFinal = 0;
         for(let k in dadosDetaFinal) {
@@ -189,6 +188,7 @@
             valorFinal += (it.qtd * it.preco);
         }
 
+        // ALTERADO: Campo 'notificar' sempre volta para true ao enviar ou editar (Fica amarelo)
         const payload = { 
             cliente: cli, 
             itens: textoTotal,
@@ -212,9 +212,17 @@
         Object.keys(pedidos).forEach(id => {
             const p = pedidos[id];
             const card = document.createElement('div');
-            card.className = 'card-consumo';
+            
+            // ALTERADO: Lógica de CSS baseada no campo 'notificar'
+            const corStatus = p.notificar ? 'status-pendente' : 'status-pronto';
+            const textoStatus = p.notificar ? '⏳ NA COZINHA' : '✅ PRONTO / ENTREGUE';
+
+            card.className = `card-consumo ${corStatus}`;
             card.innerHTML = `
-                <strong>👤 ${p.cliente}</strong>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                    <strong>👤 ${p.cliente}</strong>
+                    <span style="font-size:0.7rem; font-weight:bold">${textoStatus}</span>
+                </div>
                 <div class="lista-itens">${p.itens}</div>
                 <div class="total-consumo">R$ ${p.total}</div>
                 <button class="btn-edit btn-acao" onclick="window.retomar('${id}', '${p.cliente}', ${JSON.stringify(p.itensDeta).replace(/"/g, '&quot;')})">ADICIONAR MAIS ➕</button>
