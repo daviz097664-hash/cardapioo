@@ -20,22 +20,18 @@
         .acoes { display: flex; align-items: center; gap: 15px; }
         .acoes button { background: #ffc107; border: none; width: 40px; height: 40px; font-size: 1.4rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
         .quantidade { font-size: 1.4rem; font-weight: bold; min-width: 25px; text-align: center; }
-        
         .card-consumo { background: #111; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 8px solid #ffc107; }
         .lista-itens { color: #eee; font-size: 0.95rem; line-height: 1.4; white-space: pre-wrap; margin-bottom: 15px; background: #1a1a1a; padding: 10px; border-radius: 5px; }
         .total-consumo { color: #4caf50; font-weight: bold; font-size: 1.2rem; text-align: right; margin-bottom: 10px; }
         .btn-acao { border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%; }
         .btn-edit { background: #2196f3; color: white; margin-bottom: 5px; }
         .btn-fechar { background: #b02a37; color: white; margin-top: 10px; }
-        
         .rodape-fixo { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; padding: 20px; border-top: 2px solid #ffc107; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         #total { font-size: 1.3rem; font-weight: bold; color: #ffc107; }
         #enviar { background: #4caf50; color: #fff; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; }
-
         .painel-caixa { background: #1a1a1a; border: 2px solid #4caf50; padding: 20px; border-radius: 15px; margin-top: 50px; text-align: center; }
         .venda-valor { font-size: 2.2rem; color: #4caf50; font-weight: bold; margin: 10px 0; }
         .btn-zerar { background: #444; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; margin-top: 10px; }
-
         #modal-relatorio { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:200; overflow-y:auto; padding:20px; }
         .relatorio-corpo { background:#111; border:1px solid #ffc107; border-radius:15px; padding:20px; max-width:600px; margin:auto; }
     </style>
@@ -157,7 +153,7 @@
     window.finalizarPedido = function() {
         const idEd = document.getElementById('pedido-id-edicao').value;
         const cli = document.getElementById('nome-cliente').value;
-        if(!cli) return alert("Informe o nome do cliente!");
+        if(!cli) return alert("Informe o cliente!");
 
         let dadosDetaFinal = { ...itensConsumidos };
         for(let id in carrinhoAtual) {
@@ -179,8 +175,8 @@
             itens: textoTotal, 
             itensDeta: dadosDetaFinal, 
             total: valorFinal.toFixed(2),
-            status: "em_preparo",
-            notificar: true // ISSO GERA O (NOVO PEDIDO) NO SITE B
+            status: "pendente", // FORÇA O PEDIDO A FICAR SEM RISCO NO SITE B
+            notificar: true     // SINALIZA O "(NOVO)"
         };
 
         if(idEd) update(ref(db, `pedidos/${idEd}`), payload).then(() => location.reload());
@@ -215,16 +211,10 @@
         const msg = `CLIENTE: ${cliente}\nVALOR: R$ ${valor.toFixed(2)}\n\n1. Débito\n2. Crédito\n3. Pix\n4. Dinheiro\n5. VR`;
         const op = prompt(msg);
         const formas = {"1":"Débito","2":"Crédito","3":"Pix","4":"Dinheiro","5":"VR"};
-
         if (formas[op]) {
             const fRef = ref(db, 'historico_vendas/faturamento_total');
             const snap = await get(fRef);
-            await push(ref(db, 'historico_vendas/vendas_dia'), {
-                cliente: cliente,
-                valor: valor,
-                forma: formas[op],
-                resumo: itensTexto.substring(0, 35) + "..."
-            });
+            await push(ref(db, 'historico_vendas/vendas_dia'), { cliente, valor, forma: formas[op], resumo: itensTexto.substring(0, 35) + "..." });
             await set(fRef, parseFloat(snap.val() || 0) + parseFloat(valor));
             await remove(ref(db, `pedidos/${id}`));
             alert("Venda registrada!");
@@ -237,42 +227,30 @@
         let totalGeral = 0;
         let pgtos = { "Débito":0, "Crédito":0, "Pix":0, "Dinheiro":0, "VR":0 };
         let listaHtml = "<h3>Vendas Individuais:</h3><br>";
-
         Object.values(vendas).forEach(v => {
             const val = parseFloat(v.valor);
-            pgtos[v.forma] += val;
-            totalGeral += val;
-            listaHtml += `<div style='font-size:0.85rem; border-bottom:1px solid #333; padding:8px 0'>
-                <b>${v.cliente}</b> [${v.forma}] - <span style='color:#4caf50'>R$ ${val.toFixed(2)}</span><br>
-                <i style='color:#888'>${v.resumo}</i>
-            </div>`;
+            pgtos[v.forma] += val; totalGeral += val;
+            listaHtml += `<div style='font-size:0.85rem; border-bottom:1px solid #333; padding:8px 0'><b>${v.cliente}</b> [${v.forma}] - R$ ${val.toFixed(2)}<br><i>${v.resumo}</i></div>`;
         });
-
         let resumoHtml = "<h3>Totais por Categoria:</h3><br>";
         for(let f in pgtos) { resumoHtml += `<p>${f}: <b>R$ ${pgtos[f].toFixed(2)}</b></p>`; }
-        resumoHtml += `<br><h2 style='color:#4caf50'>TOTAL GERAL: R$ ${totalGeral.toFixed(2)}</h2><hr style='margin:15px 0; border-color:#444'>`;
-
+        resumoHtml += `<br><h2>TOTAL GERAL: R$ ${totalGeral.toFixed(2)}</h2>`;
         document.getElementById('conteudo-relatorio').innerHTML = resumoHtml + listaHtml;
         document.getElementById('modal-relatorio').style.display = 'flex';
     };
 
     window.confirmarZerarTudo = () => {
-        if(confirm("Deseja apagar o histórico e zerar o caixa?")) {
-            set(ref(db, 'historico_vendas'), { faturamento_total: 0, vendas_dia: null }).then(() => location.reload());
-        }
+        if(confirm("Confirmar fechamento do dia?")) set(ref(db, 'historico_vendas'), { faturamento_total: 0, vendas_dia: null }).then(() => location.reload());
     };
 
     window.retomar = (id, cli, itensAntigos) => {
         document.getElementById('pedido-id-edicao').value = id;
         document.getElementById('nome-cliente').value = cli;
         document.getElementById('aviso-edicao').style.display = "block";
-        itensConsumidos = itensAntigos;
-        carrinhoAtual = {}; 
-        atualizarUI();
+        itensConsumidos = itensAntigos; carrinhoAtual = {}; atualizarUI();
         window.scrollTo(0,0);
         document.getElementById('enviar').innerText = "ATUALIZAR CONSUMO";
     };
 </script>
 </body>
 </html>
-
